@@ -1,0 +1,10 @@
+node_modules
+docs
+dist
+app
+src
+report
+.tmp
+.sass-cache
+components/*
+tools/*

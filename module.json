@@ -1,0 +1,26 @@
+{
+  "name": "refinery",
+  "description": "RefineryCMS EpicEditor module",
+  "version": "0.0.1",
+  "homepage": "https://github.com/keram-refinery/refinery-clientside-refinery",
+  "bugs": "https://github.com/keram-refinery/refinery-clientside-refinery/issues",
+  "author": {
+    "name": "Marek L.",
+    "email": "nospam.keram@gmail.com",
+    "url": "http://refinery.sk/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/keram-refinery/refinery-clientside-refinery.git"
+  },
+  "licenses": [{
+    "type": "MIT",
+    "url": "http://opensource.org/licenses/mit-license.php/"
+  }],
+  "readme": "",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "i18n": "~0.0.1"
+  }
+}

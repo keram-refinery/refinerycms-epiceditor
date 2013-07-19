@@ -1,0 +1,52 @@
+<!doctype html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>EpicEditor specs</title>
+    <link rel="stylesheet" href="/node_modules/grunt-mocha/node_modules/mocha/mocha.css">
+    <link rel="stylesheet" href="/components/jquery-ui/themes/trontastic/jquery-ui.min.css">
+</head>
+<body>
+    <div id="mocha"></div>
+    <div id="container">
+        <div class="field">
+            <textarea cols=80 rows=5 id="textarea"></textarea>
+        </div>
+    </div>
+
+    <script src="/node_modules/grunt-mocha/node_modules/mocha/mocha.js"></script>
+    <script>mocha.setup('bdd')</script>
+    <!-- assertion framework -->
+    <script src="/node_modules/chai/chai.js"></script>
+    <script>var expect = chai.expect</script>
+
+    <!-- stub and mocks framework -->
+    <script src="/node_modules/sinon/pkg/sinon.js"></script>
+
+    <!-- include components files here... -->
+    <script src="/components/jquery/jquery.js"></script>
+    <script src="/components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="/components/i18n.js"></script>
+
+    <script src="/refinery/scripts/i18n/refinery-en.js"></script>
+    <script src="/refinery/scripts/i18n/refinery-admin-en.js"></script>
+
+
+    <script src="../../components/EpicEditor/epiceditor/js/epiceditor.js"></script>
+
+    <script src="../../i18n/refinery-epiceditor-en.js"></script>
+
+    <script src="../../components/refinery/.tmp/assets/javascripts/refinery/refinery.all.js"></script>
+    <script src="../../components/refinery/.tmp/assets/javascripts/refinery/admin/admin.all.js"></script>
+
+    <script src="../../.tmp/assets/javascripts/refinery-epiceditor/refinery-epiceditor.min.js"></script>
+
+    <script src="./epiceditor.js"></script>
+
+    <script>
+    mocha
+    .globals([ 'LiveReload', 'constructor', 'top', '0', '1', '2' ])
+    .run()
+    </script>
+</body>
+</html>
