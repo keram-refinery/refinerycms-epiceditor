@@ -7,17 +7,17 @@ var dir = __dirname,
     // tests_dir = dir + '/test',
     build_dir = dir + '/lib/assets',
     grunt = {
-        'watch' : [{
-            'js' : {
+        'watch': [{
+            'js': {
                 'files': [scripts_dir + '/*.js'],
                 'tasks': ['closureCompiler:refinery-epiceditor_js',
                             'concat:refinery-epiceditor_js',
                             'copy:refinery-epiceditor_js',
                             'livereload']
             },
-            'styles' : {
+            'styles': {
                 'files': [styles_dir + '/{,*/}*.css', styles_dir + '/{,*/}*.css.scss'],
-                'tasks': ['copy:refinery-epiceditor_styles']
+                'tasks': ['assetUrl:refinery-epiceditor_styles', 'copy:refinery-epiceditor_styles']
             }
         }],
         'closureCompiler': [{
@@ -46,19 +46,8 @@ var dir = __dirname,
             }
         }],
 
-//        clean: [{
-//            base: {
-//                files: [{
-//                    dot: true,
-//                    src: [
-//                        dir + '/.tmp'
-//                    ]
-//                }]
-//            }
-//        }],
-//
         'concat': [{
-            'js' : {
+            'js': {
                 'src': [
                     'scripts/*.js'
                 ],
@@ -83,8 +72,8 @@ var dir = __dirname,
                 'files': [{
                     'expand': true,
                     'dot': true,
-                    'cwd': dir + '/styles/',
-                    'dest': build_dir + '/stylesheets/refinery/',
+                    'cwd': dir + '/.tmp/assets/stylesheets/',
+                    'dest': build_dir + '/stylesheets/',
                     'src': [
                         '**'
                     ]

@@ -5,13 +5,11 @@
     <title>EpicEditor specs</title>
     <link rel="stylesheet" href="/node_modules/grunt-mocha/node_modules/mocha/mocha.css">
     <link rel="stylesheet" href="/components/jquery-ui/themes/trontastic/jquery-ui.min.css">
+    <link rel="stylesheet" href="../../styles/refinery-epiceditor.css">
 </head>
 <body>
     <div id="mocha"></div>
     <div id="container">
-        <div class="field">
-            <textarea cols=80 rows=5 id="textarea"></textarea>
-        </div>
     </div>
 
     <script src="/node_modules/grunt-mocha/node_modules/mocha/mocha.js"></script>
@@ -28,8 +26,8 @@
     <script src="/components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
     <script src="/components/i18n.js"></script>
 
-    <script src="/refinery/scripts/i18n/refinery-en.js"></script>
-    <script src="/refinery/scripts/i18n/refinery-admin-en.js"></script>
+    <script src="/refinery/i18n/refinery-en.js"></script>
+    <script src="/refinery/i18n/refinery-admin-en.js"></script>
 
 
     <script src="../../components/EpicEditor/epiceditor/js/epiceditor.js"></script>
@@ -37,11 +35,12 @@
     <script src="../../i18n/refinery-epiceditor-en.js"></script>
 
     <script src="../../components/refinery/.tmp/assets/javascripts/refinery/refinery.all.js"></script>
-    <script src="../../components/refinery/.tmp/assets/javascripts/refinery/admin/admin.all.js"></script>
+    <script src="../../components/refinery/.tmp/assets/javascripts/refinery/refinery-admin.all.js"></script>
 
-    <script src="../../.tmp/assets/javascripts/refinery-epiceditor/refinery-epiceditor.min.js"></script>
+    <script src="../../scripts/epiceditor.js"></script>
 
     <script src="./epiceditor.js"></script>
+    <script src="./epiceditor_on_tabs.js"></script>
 
     <script>
     mocha

@@ -53,6 +53,14 @@
             }
         },
 
+
+        /**
+         * EpicEditor
+         * @expose
+         * @type {EpicEditor} EpicEditor
+         */
+        editor: null,
+
         /**
          * Insert string to EpicEditor
          * @param  {string} str
@@ -93,13 +101,12 @@
                     var tpl = '![%alt](%url)';
 
                     tpl = tpl.replace('%alt', '');
-                    tpl = tpl.replace('%url', img.original);
+                    tpl = tpl.replace('%url', img[img.size]);
 
                     that.insert(tpl);
                 }
             );
 
-            /** @expose */
             that.img_dialog = img_dialog;
         },
 
@@ -150,7 +157,6 @@
                 }
             );
 
-            /** @expose */
             that.file_dialog = file_dialog;
         },
 
@@ -191,7 +197,6 @@
                 }
             );
 
-            /** @expose */
             that.link_dialog = link_dialog;
         },
 
@@ -199,26 +204,26 @@
             if (this.is('initialised')) {
                 if (this.editor) {
                     // it also remove content of textarea which is bad
-                    //this.editor.unload();
+                    // this.editor.unload();
                     this.editor = null;
                 }
 
                 if (this.img_dialog) {
-                    this.img_dialog.destroy();
+                    this.img_dialog.destroy(true);
                 }
 
                 if (this.file_dialog) {
-                    this.file_dialog.destroy();
+                    this.file_dialog.destroy(true);
                 }
 
                 if (this.link_dialog) {
-                    this.link_dialog.destroy();
+                    this.link_dialog.destroy(true);
                 }
 
                 this.holder.find('.epiceditor-holder').remove();
             }
 
-            refinery.Object.prototype.destroy.apply(this, [removeGlobalReference]);
+            this._destroy(removeGlobalReference);
 
             return this;
         },
@@ -235,20 +240,21 @@
 
             if (that.is('initialisable')) {
                 that.is('initialising', true);
-                that.holder = holder;
+                that.attach_holder(holder);
 
                 textarea = holder.find('textarea');
                 editor_holder = $('<div/>', {
                     'class': 'epiceditor-holder'
                 }).appendTo(holder);
 
+
                 that.options.container = editor_holder.get(0);
                 that.options.textarea = textarea.get(0);
 
                 textarea.hide();
 
-                /** @expose */
                 that.options.file['name'] = 'refinery' + this.uid;
+
                 that.editor = new EpicEditor(that.options);
 
                 that.editor.remove(that.options.file['name']);
@@ -260,8 +266,6 @@
                 that.init_resources_dialog();
                 that.init_links_dialog();
 
-                refinery.Object.attach(that.uid, holder);
-
                 that.is({'initialised': true, 'initialising': false});
                 that.trigger('init');
             }
@@ -271,7 +275,7 @@
     });
 
     /**
-     * Editor initialization1
+     * Editor initialization
      *
      * @expose
      * @param  {jQuery} holder

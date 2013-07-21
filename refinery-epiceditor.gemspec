@@ -14,4 +14,6 @@ Gem::Specification.new do |s|
   s.files             = `git ls-files -- lib/*`.split("\n")
   s.require_paths     = %w(lib)
 
+  s.add_dependency 'redcarpet', '~> 3.0.0'
+
 end

@@ -38,9 +38,6 @@ describe 'Refinery EpicEditor', ->
       @editor.destroy(true)
       @editor = null
 
-    it 'has instance of EpicEditor', ->
-      expect( @editor.editor ).to.be.an.instanceof EpicEditor
-
     context '#container', ->
       it 'contains div.epiceditor-holder', ->
         expect( $('div.epiceditor-holder').length ).to.eq(1)
@@ -63,10 +60,6 @@ describe 'Refinery EpicEditor', ->
 
 
     describe 'Insert image', ->
-      after ->
-        @textarea.val('')
-        @editable_area.empty()
-
       context 'via Library', ->
         before (done) ->
           @editable_area.empty()
@@ -88,7 +81,6 @@ describe 'Refinery EpicEditor', ->
 
         after ->
           @editable_area.empty()
-          @textarea.val('')
           @editor.img_dialog.off 'load', @libraryTab
 
 
@@ -132,7 +124,6 @@ describe 'Refinery EpicEditor', ->
 
 
     describe 'Insert resource', ->
-
       context 'via Library', ->
         before (done) ->
           @editable_area.empty()
@@ -160,12 +151,10 @@ describe 'Refinery EpicEditor', ->
           expect( @editable_area.html() ).to.have.string(@expectation)
 
         it 'include resource tag to text area', ->
-          @textarea.focus()
           expect( @textarea.val() ).to.have.string(@expectation)
 
 
     describe 'Insert link', ->
-
       context 'via Library', ->
         before (done) ->
           @editable_area.empty()
@@ -193,15 +182,11 @@ describe 'Refinery EpicEditor', ->
         it 'include link tag to editable area', ->
           expect( @editable_area.html() ).to.have.string(@expectation)
 
-        it 'include link tag to text area', (done) ->
-          @textarea.focus()
-
+        it 'include link tag to text area', ->
           expect( @textarea.val() ).to.have.string(@expectation)
-          done()
 
       context 'via Url', ->
         before (done) ->
-          @editable_area.empty()
           url = 'http://localhost:9000/refinery-epiceditor/'
           @expectation = '[localhost:9000/refinery-epiceditor/](' + url + ')'
           editor = @editor
