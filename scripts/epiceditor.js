@@ -221,6 +221,7 @@
                 }
 
                 this.holder.find('.epiceditor-holder').remove();
+                this.toggle_button.remove();
             }
 
             this._destroy(removeGlobalReference);
@@ -261,6 +262,27 @@
                 that.editor.load();
 
                 that.util_bar = $(that.editor.getElement('wrapper')).find('#epiceditor-utilbar');
+
+                that.toggle_button = $('<button/>', {
+                    'class': 'epiceditor-toggle-button',
+                    'text': t('refinery.editor.toggle_editor')
+                }).appendTo(holder);
+
+                that.toggle_button.on('click', function () {
+                    var tmp = textarea.val();
+
+                    editor_holder.toggle();
+                    textarea.toggle();
+
+                    if (that.editor.is('loaded')) {
+                        that.editor.unload();
+                        textarea.val(tmp);
+                    } else {
+                        that.editor.load();
+                        that.editor.importFile(that.options.file['name'], tmp);
+                    }
+
+                });
 
                 that.init_images_dialog();
                 that.init_resources_dialog();
