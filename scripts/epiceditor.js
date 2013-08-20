@@ -300,8 +300,10 @@
                     'text': t('refinery.editor.toggle_editor')
                 }).appendTo(holder);
 
-                that.toggle_button.on('click', function () {
+                that.toggle_button.on('click', function (e) {
                     var tmp = textarea.val();
+
+                    e.preventDefault();
 
                     editor_holder.toggle();
                     textarea.toggle();
