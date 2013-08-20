@@ -72,6 +72,10 @@ describe 'Refinery EpicEditor', ->
       @editable_area = $(@editor.editor.getElement('editor').body)
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
 
+    after ->
+      @editor.destroy(true)
+      @editor = null
+
     it 'has Images, Resources, Links dialog', ->
       expect( @util_bar.html() ).to.have.string('Image Dialog')
       expect( @util_bar.html() ).to.have.string('File Dialog')
