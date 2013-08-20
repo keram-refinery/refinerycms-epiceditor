@@ -37,9 +37,9 @@ module Refinery
         Refinery::Pages::PagePartSectionPresenter.class_eval do
           def initialize(page_part)
             super()
-
             self.fallback_html = markdown.render(page_part.body).html_safe if page_part.body
-            self.id = convert_title_to_id(page_part.title) if page_part.title
+            self.id = page_part.title
+            self.hide unless page_part.active
           end
 
           def markdown

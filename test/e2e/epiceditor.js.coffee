@@ -7,6 +7,25 @@ refinery.editor.EpicEditor.prototype.options.theme.base = 'styles/epiceditor/the
 refinery.editor.EpicEditor.prototype.options.theme.editor = 'styles/epiceditor/themes/preview/refinery.css'
 refinery.editor.EpicEditor.prototype.options.theme.preview = 'styles/epiceditor/themes/editor/refinery.css'
 
+errorResponse = (data) ->
+  data = data || {}
+  d = $.Deferred()
+  d.reject(data, 404, 'something went wrong')
+  d.promise()
+
+okResponse = (data) ->
+  data = data || {}
+  d = $.Deferred()
+  d.resolve(
+    data,
+    'success',
+    {
+      getResponseHeader: (args) ->
+        false
+    }
+  )
+  d.promise()
+
 describe 'Refinery EpicEditor', ->
 
   before ->
@@ -63,26 +82,28 @@ describe 'Refinery EpicEditor', ->
       context 'via Library', ->
         before (done) ->
           @editable_area.empty()
-          @expectation = '![](/refinery/test/fixtures/300x200-a.jpg)'
+          @expectation = '![Image alt](/refinery/test/fixtures/500x350.jpg)'
           editor = @editor
 
           @libraryTab = ->
             $('a[href="#existing-image-area"]').click()
-            editor.img_dialog.holder.find('div[aria-expanded="true"]').find('.insert-button').click()
-            done()
+            $.getJSON '/refinery/test/fixtures/image_dialog.json', (response) ->
+              ajaxStub = sinon.stub($, 'ajax')
+              ajaxStub.returns(okResponse(response))
 
-          if editor.img_dialog.is('loaded')
-            @libraryTab()
-          else
-            editor.img_dialog.on 'load', @libraryTab
+              $('.ui-dialog .insert-button:visible').click()
+              $('.ui-dialog:visible .insert-button:visible').click()
+              done()
+
+          editor.images_dialog.on 'load', @libraryTab
 
           @util_bar.find('button.editor-images-dialog-btn').click()
-          expect( editor.img_dialog.is('opened') ).to.be.true
+          #expect( editor.images_dialog.is('opened') ).to.be.true
 
         after ->
+          $.ajax.restore()
           @editable_area.empty()
-          @editor.img_dialog.off 'load', @libraryTab
-
+          @editor.images_dialog.off 'load', @libraryTab
 
         it 'include image tag to editable area', ->
           expect( @editable_area.html() ).to.have.string(@expectation)
@@ -99,22 +120,22 @@ describe 'Refinery EpicEditor', ->
 
           @urlTab = ->
             $('a[href="#external-image-area"]').click()
-            tab = editor.img_dialog.holder.find('div[aria-expanded="true"]')
+            tab = editor.images_dialog.holder.find('div[aria-expanded="true"]')
             tab.find('input[type="url"]').val(url)
-            tab.find('.insert-button').click()
+            $('.ui-dialog:visible .insert-button:visible').click()
             done()
 
           @util_bar.find('button.editor-images-dialog-btn').click()
-          expect( editor.img_dialog.is('opened') ).to.be.true
+          expect( editor.images_dialog.is('opened') ).to.be.true
 
-          if editor.img_dialog.is('loaded')
+          if editor.images_dialog.is('loaded')
             @urlTab()
           else
-            editor.img_dialog.on 'load', @urlTab
+            editor.images_dialog.on 'load', @urlTab
 
         after ->
           @editable_area.empty()
-          @editor.img_dialog.off 'load', @urlTab
+          @editor.images_dialog.off 'load', @urlTab
 
         it 'include image tag to editable area', ->
           expect( @editable_area.html() ).to.have.string(@expectation)
@@ -132,7 +153,7 @@ describe 'Refinery EpicEditor', ->
 
           @libraryTab = ->
             $('a[href="#existing-resource-area"]').click()
-            editor.file_dialog.holder.find('div[aria-expanded="true"]').find('.insert-button').click()
+            $('.ui-dialog:visible .insert-button:visible').click()
             done()
 
           if editor.file_dialog.is('loaded')
@@ -163,7 +184,7 @@ describe 'Refinery EpicEditor', ->
 
           @libraryTab = ->
             $('a[href="#links-dialog-pages"]').click()
-            editor.link_dialog.holder.find('div[aria-expanded="true"]').find('.insert-button').click()
+            $('.ui-dialog:visible .insert-button:visible').click()
             done()
 
           if editor.link_dialog.is('loaded')
@@ -195,7 +216,7 @@ describe 'Refinery EpicEditor', ->
             $('a[href="#links-dialog-website"]').click()
             tab = editor.link_dialog.holder.find('div[aria-expanded="true"]')
             tab.find('input[type="url"]').val(url)
-            tab.find('.insert-button').click()
+            $('.ui-dialog:visible .insert-button:visible').click()
             done()
 
           @util_bar.find('button.editor-links-dialog-btn').click()
@@ -234,7 +255,7 @@ describe 'Refinery EpicEditor', ->
             tab.find('#email_address_text').val(email)
             tab.find('#email_default_subject_text').val(subject)
             tab.find('#email_default_body_text').val(body)
-            tab.find('.insert-button').click()
+            $('.ui-dialog:visible .insert-button:visible').click()
             done()
 
           @util_bar.find('button.editor-links-dialog-btn').click()
@@ -254,3 +275,32 @@ describe 'Refinery EpicEditor', ->
 
         it 'include link tag to text area', ->
           expect( @textarea.val() ).to.have.string(@expectation)
+
+
+  describe 'toggle button', ->
+    before (done) ->
+      @editor = editor = new refinery.editor.EpicEditor()
+      @editor.init($('#textarea').parent())
+      @editable_area = $(@editor.editor.getElement('editor').body)
+      @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
+      @expectation = 'lorem ipsum'
+      @editable_area.html(@expectation)
+      $('.epiceditor-toggle-button').click()
+      done()
+
+    after ->
+      @editor.destroy(true)
+      @editable_area.empty()
+
+    context 'first click', ->
+      it 'shows textarea instead of editor', ->
+        expect( $('#textarea').is(':visible') ).to.be.true
+        expect( $('.epiceditor-holder').is(':visible') ).to.be.false
+
+    context 'second click', ->
+      before ->
+        $('.epiceditor-toggle-button').click()
+
+      it 'shows again editor', ->
+        expect( $('#textarea').is(':visible') ).to.be.false
+        expect( $('.epiceditor-holder').is(':visible') ).to.be.true
