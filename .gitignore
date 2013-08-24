@@ -3,7 +3,6 @@ docs
 dist
 app
 src
-report
 .tmp
 .sass-cache
 components/*

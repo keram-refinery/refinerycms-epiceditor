@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+
+  <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap-3.0.0-wip.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
+  <link href="../../assets/css/plato.css" rel="stylesheet">
+  <link href="../../assets/css/plato-file.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-fixed-top">
+  <div class="container">
+    <a class="brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
+    <ul class="nav">
+      <li>
+        <a href="../../index.html">Report Home</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <div class="container">
+    <h1>scripts/epiceditor.js</h1>
+  </div>
+</div>
+
+<div class="container aggregate-stats">
+  <div class="row">
+    <div class="span6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
+      <p class="stat">64.00</p>
+    </div>
+    <div class="span6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
+      <p class="stat">371</p>
+    </div>
+  </div>
+  <div class="row historical">
+    <div class="span6">
+      <p id="chart_historical_maint" class="chart"></p>
+    </div>
+    <div class="span6">
+      <p id="chart_historical_sloc" class="chart"></p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="span6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
+      <p class="stat">33.87</p>
+    </div>
+    <div class="span6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
+      <p class="stat">2.69</p>
+    </div>
+  </div>
+</div>
+
+<div class="container charts">
+  <div class="row">
+    <h2 class="header">Function weight</h2>
+  </div>
+  <div class="row">
+    <div class="span6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+      <div id="fn-by-complexity" class="stat"></div>
+    </div>
+    <div class="span6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+      <div id="fn-by-sloc" class="stat"></div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <textarea id="file-source" class="span12">/*global EpicEditor, marked */
+/*jslint sub: true */
+
+(function () {
+
+    &#039;use strict&#039;;
+
+    /**
+     * @constructor
+     * @class refinery.editor.EpicEditor
+     * @expose
+     * @extends {refinery.Object}
+     */
+    refinery.Object.create({
+
+        name: &#039;EpicEditor&#039;,
+
+        module: &#039;editor&#039;,
+
+        /** @typedef {epiceditor_config} */
+        options: {
+            container: &#039;epiceditor&#039;,
+            textarea: null,
+            basePath: &#039;/assets/refinery/epiceditor/&#039;,
+            clientSideStorage: true,
+            localStorageName: &#039;epiceditor&#039;,
+            useNativeFullscreen: true,
+            parser: marked,
+            file: {
+                &#039;name&#039;: &#039;refinery&#039;,
+                &#039;defaultContent&#039;: &#039;&#039;,
+                &#039;autoSave&#039;: false
+            },
+            theme: {
+                &#039;base&#039;:    &#039;themes/base/epiceditor.css&#039;,
+                &#039;preview&#039;: &#039;themes/preview/refinery.css&#039;,
+                &#039;editor&#039;:  &#039;themes/editor/refinery.css&#039;
+            },
+            button: {
+                &#039;preview&#039;: true,
+                &#039;fullscreen&#039;: true
+            },
+            focusOnLoad: false,
+            shortcut: {
+                &#039;modifier&#039;: 18,
+                &#039;fullscreen&#039;: 70,
+                &#039;preview&#039;: 80
+            },
+            string: {
+                &#039;togglePreview&#039;: t(&#039;refinery.editor.toggle_preview_mode&#039;),
+                &#039;toggleEdit&#039;: t(&#039;refinery.editor.toggle_edit_mode&#039;),
+                &#039;toggleFullscreen&#039;: t(&#039;refinery.editor.enter_fullscreen&#039;)
+            }
+        },
+
+
+        /**
+         * EpicEditor
+         * @expose
+         * @type {EpicEditor} EpicEditor
+         */
+        editor: null,
+
+        /**
+         * Insert string to EpicEditor
+         * @param  {string} str
+         * @return {undefined}
+         */
+        insert: function (str) {
+            this.editor.edit();
+            this.editor.editorIframeDocument.execCommand(&#039;insertText&#039;, false, str);
+        },
+
+        /**
+         *
+         * @return {undefined}
+         */
+        init_images_dialog: function () {
+            var that = this,
+                util_bar = that.util_bar,
+                images_btn, images_dialog;
+
+            images_btn = $(&#039;&lt;button/&gt;&#039;, {
+                &#039;title&#039;: t(&#039;refinery.editor.images_dialog_button_title&#039;),
+                &#039;class&#039;: &#039;editor-images-dialog-btn refinery-btn&#039;
+            }).prependTo(util_bar);
+
+            images_dialog = refinery(&#039;admin.ImagesDialog&#039;);
+
+            images_btn.on(&#039;click&#039;, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                images_dialog.init().open();
+
+                return false;
+            });
+
+            images_dialog.on(&#039;insert&#039;,
+                /** @param {images_dialog_object} img */
+                function (img) {
+                    var tpl = &#039;![%alt](%url)&#039;;
+
+                    if (img.url) {
+                        tpl = tpl.replace(&#039;%alt&#039;, /** @type {string} */(img.alt));
+                        tpl = tpl.replace(&#039;%url&#039;, /** @type {string} */(img.url));
+                        that.insert(tpl);
+                    } else {
+                        that.init_image_dialog(img.id);
+                    }
+                }
+            );
+
+            that.images_dialog = images_dialog;
+        },
+
+        init_image_dialog: function (image_id) {
+            var that = this,
+                dialog, buttons;
+
+
+            buttons = [ {
+                &#039;text&#039;: &#039;Insert&#039;,
+                &#039;click&#039;: function () {
+                    dialog.insert();
+                }
+            }, {
+                &#039;text&#039;: &#039;Back to the library&#039;,
+                &#039;click&#039;: function () {
+                    dialog.close();
+                    that.images_dialog.open();
+                }
+            }];
+
+            dialog = refinery(&#039;admin.ImageDialog&#039;, {
+                    &#039;image_id&#039;: image_id,
+                    &#039;buttons&#039;: buttons
+                }).init();
+
+            dialog.on(&#039;insert&#039;,
+                /** @param {image_dialog_object} img */
+                function (img) {
+                    var tpl = &#039;![%alt](%url)&#039;;
+
+                    tpl = tpl.replace(&#039;%alt&#039;, img.alt);
+                    tpl = tpl.replace(&#039;%url&#039;, img.sizes[img.size]);
+
+                    that.insert(tpl);
+                    dialog.destroy(true);
+                }
+            );
+
+            dialog.open();
+        },
+
+        /**
+         *
+         * @return {undefined}
+         */
+        init_resources_dialog: function () {
+            var that = this,
+                util_bar = that.util_bar,
+                file_btn, file_dialog;
+
+            file_btn = $(&#039;&lt;button/&gt;&#039;, {
+                &#039;title&#039;: t(&#039;refinery.editor.resources_dialog_button_title&#039;),
+                &#039;class&#039;: &#039;editor-resources-dialog-btn refinery-btn&#039;
+            }).prependTo(util_bar);
+
+            file_dialog = refinery(&#039;admin.ResourcesDialog&#039;);
+
+            file_btn.on(&#039;click&#039;, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                file_dialog.init().open();
+
+                return false;
+            });
+
+            file_dialog.on(&#039;insert&#039;,
+                /** @param {file_dialog_object} file */
+                function (file) {
+                    var tpl;
+
+                    tpl = &#039;&lt;a href=&quot;&#039; + file.url + &#039;&quot; &#039; +
+                            &#039;class=&quot;file &#039; + file.ext + &#039;&quot; &#039; +
+                            &#039;title=&quot;&#039; + file.name + &#039; - &#039; + file.size + &#039; bytes &quot; &gt;&#039; +
+                            file.name +
+                            &#039;&lt;/a&gt;&#039;;
+
+                    that.insert(tpl);
+                }
+            );
+
+            that.file_dialog = file_dialog;
+        },
+
+        /**
+         *
+         * @return {undefined}
+         */
+        init_pages_dialog: function () {
+            var that = this,
+                util_bar = that.util_bar,
+                pages_btn, pages_dialog;
+
+            pages_btn = $(&#039;&lt;button/&gt;&#039;, {
+                &#039;title&#039;: t(&#039;refinery.editor.pages_dialog_button_title&#039;),
+                &#039;class&#039;: &#039;editor-pages-dialog-btn refinery-btn&#039;
+            }).prependTo(util_bar);
+
+            pages_dialog = refinery(&#039;admin.PagesDialog&#039;);
+
+            pages_btn.on(&#039;click&#039;, function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                pages_dialog.init().open();
+
+                return false;
+            });
+
+            pages_dialog.on(&#039;insert&#039;,
+                /** @param {pages_dialog_object} link */
+                function (link) {
+                    var tpl = &#039;[%title](%url)&#039;;
+
+                    tpl = tpl.replace(&#039;%title&#039;, link.title);
+                    tpl = tpl.replace(&#039;%url&#039;, link.url);
+
+                    that.insert(tpl);
+                }
+            );
+
+            that.pages_dialog = pages_dialog;
+        },
+
+        destroy: function (removeGlobalReference) {
+            var textarea,
+                tmp;
+
+            if (this.is(&#039;initialised&#039;)) {
+                if (this.editor) {
+                    textarea = $(this.options.textarea);
+                    tmp = /** @type {string} */(textarea.val());
+
+                    // for bug:
+                    // TypeError: editor is null
+                    // editor.parentNode.removeChild(editor);
+                    try {
+                        this.editor.unload();
+                    } catch (e) {
+                        if (typeof console === &#039;object&#039; &amp;&amp; typeof console.log === &#039;function&#039;) {
+                            console.log(e);
+                        }
+                    }
+
+                    this.editor = null;
+                    textarea.val(tmp);
+                }
+
+                if (this.images_dialog) {
+                    this.images_dialog.destroy(true);
+                }
+
+                if (this.file_dialog) {
+                    this.file_dialog.destroy(true);
+                }
+
+                if (this.pages_dialog) {
+                    this.pages_dialog.destroy(true);
+                }
+
+                this.holder.find(&#039;.epiceditor-holder&#039;).remove();
+                this.toggle_button.remove();
+            }
+
+            this._destroy(removeGlobalReference);
+
+            return this;
+        },
+
+        /**
+         * Initialisation
+         *
+         * @param {!jQuery} holder
+         *
+         * @return {Object} self
+         */
+        init: function (holder) {
+            var that = this, textarea, editor_holder;
+
+            if (that.is(&#039;initialisable&#039;)) {
+                that.is(&#039;initialising&#039;, true);
+                that.attach_holder(holder);
+
+                textarea = holder.find(&#039;textarea&#039;);
+                editor_holder = $(&#039;&lt;div/&gt;&#039;, {
+                    &#039;class&#039;: &#039;epiceditor-holder&#039;
+                }).appendTo(holder);
+
+
+                that.options.container = editor_holder.get(0);
+                that.options.textarea = textarea.get(0);
+
+                textarea.hide();
+
+                that.options.file[&#039;name&#039;] = &#039;refinery&#039; + this.uid;
+
+                that.editor = new EpicEditor(that.options);
+
+                that.editor.remove(that.options.file[&#039;name&#039;]);
+                that.editor.load();
+
+                that.util_bar = $(that.editor.getElement(&#039;wrapper&#039;)).find(&#039;#epiceditor-utilbar&#039;);
+
+                that.toggle_button = $(&#039;&lt;button/&gt;&#039;, {
+                    &#039;class&#039;: &#039;epiceditor-toggle-button&#039;,
+                    &#039;text&#039;: t(&#039;refinery.editor.toggle_editor&#039;)
+                }).appendTo(holder);
+
+                that.toggle_button.on(&#039;click&#039;, function (e) {
+                    var tmp = textarea.val();
+
+                    e.preventDefault();
+
+                    editor_holder.toggle();
+                    textarea.toggle();
+
+                    if (textarea.is(&#039;:visible&#039;)) {
+                        textarea.val(tmp);
+                    } else {
+                        that.editor.importFile(that.options.file[&#039;name&#039;], tmp);
+                    }
+                });
+
+                that.init_images_dialog();
+                that.init_resources_dialog();
+                that.init_pages_dialog();
+
+                that.is({&#039;initialised&#039;: true, &#039;initialising&#039;: false});
+                that.trigger(&#039;init&#039;);
+            }
+
+            return that;
+        }
+    });
+
+    /**
+     * Editor initialization
+     *
+     * @expose
+     * @param  {jQuery} holder
+     * @return {undefined}
+     */
+    refinery.admin.ui.editorEpicEditor = function (holder) {
+        var tabs = holder.find(&#039;.ui-tabs&#039;), editors = [];
+
+        holder.find(&#039;textarea.replace-with-editor&#039;).each(function () {
+            var holder = $(this).parent();
+
+            editors[editors.length] = refinery(&#039;editor.EpicEditor&#039;).init(holder);
+        });
+
+        tabs.on(&#039;tabsactivate&#039;, function () {
+            for (var i = editors.length - 1; i &gt;= 0; i--) {
+                if (editors[i].editor) {
+                    editors[i].editor.reflow();
+                }
+            }
+        });
+    };
+
+}());</textarea>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="container">
+    <p>.</p>
+  </div>
+</footer>
+
+<script type="text/html" id="complexity-popover-template">
+  <div class="complexity-notice">
+    Complexity : {{ complexity.cyclomatic }} <br>
+    Length : {{ complexity.halstead.length }} <br>
+    Difficulty : {{ complexity.halstead.difficulty.toFixed(2) }} <br>
+    Est # bugs : {{ complexity.halstead.bugs.toFixed(2) }}<br>
+  </div>
+</script>
+
+<script type="text/javascript" src="../../assets/scripts/bundles/core-bundle.js"></script>
+<script type="text/javascript" src="../../assets/scripts/bundles/codemirror.js"></script>
+<script type="text/javascript" src="../../assets/scripts/codemirror.markpopovertext.js"></script>
+<script type="text/javascript" src="report.js"></script>
+<script type="text/javascript" src="report.history.js"></script>
+<script type="text/javascript" src="../../assets/scripts/plato-file.js"></script>
+</body>
+</html>
