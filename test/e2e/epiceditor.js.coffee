@@ -7,25 +7,6 @@ refinery.editor.EpicEditor.prototype.options.theme.base = 'styles/epiceditor/the
 refinery.editor.EpicEditor.prototype.options.theme.editor = 'styles/epiceditor/themes/preview/refinery.css'
 refinery.editor.EpicEditor.prototype.options.theme.preview = 'styles/epiceditor/themes/editor/refinery.css'
 
-errorResponse = (data) ->
-  data = data || {}
-  d = $.Deferred()
-  d.reject(data, 404, 'something went wrong')
-  d.promise()
-
-okResponse = (data) ->
-  data = data || {}
-  d = $.Deferred()
-  d.resolve(
-    data,
-    'success',
-    {
-      getResponseHeader: (args) ->
-        false
-    }
-  )
-  d.promise()
-
 describe 'Refinery EpicEditor', ->
 
   before ->
@@ -34,7 +15,7 @@ describe 'Refinery EpicEditor', ->
     @textarea = $('#textarea')
 
   after ->
-    #@container.empty()
+    @container.empty()
 
   describe 'Instance', ->
     before ->
@@ -107,7 +88,7 @@ describe 'Refinery EpicEditor', ->
           ajaxStub.returns(okResponse(response))
 
           uiSelect('#image-1')
-          $('.ui-dialog:visible .insert-button:visible').click()
+          $('.ui-dialog:visible form').submit()
           done()
 
       after ->

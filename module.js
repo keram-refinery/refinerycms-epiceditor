@@ -31,6 +31,7 @@ var dir = __dirname,
                         'externs': ['externs/jquery-1.9.js',
                                     'externs/custom.js',
                                     'externs/refinery.js',
+                                    'externs/refinery_object.js',
                                     'externs/refinery-admin.js',
                                     dir + '/externs/epiceditor.js'
                                     ],

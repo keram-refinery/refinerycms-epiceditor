@@ -132,7 +132,7 @@
             }];
 
             dialog = refinery('admin.ImageDialog', {
-                    'url': '/refinery/dialogs/image/' + image_id,
+                    'image_id': image_id,
                     'buttons': buttons
                 }).init();
 
@@ -243,7 +243,18 @@
                 if (this.editor) {
                     textarea = $(this.options.textarea);
                     tmp = /** @type {string} */(textarea.val());
-                    this.editor.unload();
+
+                    // for bug:
+                    // TypeError: editor is null
+                    // editor.parentNode.removeChild(editor);
+                    try {
+                        this.editor.unload();
+                    } catch (e) {
+                        if (typeof console === 'object' && typeof console.log === 'function') {
+                            console.log(e);
+                        }
+                    }
+
                     this.editor = null;
                     textarea.val(tmp);
                 }

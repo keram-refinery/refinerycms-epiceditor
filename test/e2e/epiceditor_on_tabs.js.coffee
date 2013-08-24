@@ -25,10 +25,11 @@ describe 'Refinery EpicEditor on Tabs', ->
     @container.empty()
     @ui.destroy(true)
 
+  # google chrome returns This&nbsp;is&nbsp;body&nbsp;text which is not our bug probably
   it 'have content of textarea', ->
-    expect( refinery.Object.instances.get(
-      $('#page_part_body').data('refinery-instances')
-    ).editor.getElement('editor').body.innerHTML ).to.have.string(@body_text)
+    editor = refinery.Object.instances.get( $('#page_part_body').data('refinery-instances') ).editor
+    console.log($(editor.getElement('editor').body).html())
+    expect( $(editor.getElement('editor').body).text().replace(/\s/g, '') ).to.be.equal(@body_text.replace(/\s/g, ''))
 
   describe 'ui reload', ->
     before ->
