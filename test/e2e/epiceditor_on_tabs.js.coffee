@@ -1,6 +1,6 @@
 refinery.admin.ImagesDialog.prototype.options.url = '../../components/refinery/test/fixtures/images_dialog.json'
 refinery.admin.ResourcesDialog.prototype.options.url = '../../components/refinery/test/fixtures/resources_dialog.json'
-refinery.admin.LinksDialog.prototype.options.url = '../../components/refinery/test/fixtures/links_dialog.json'
+refinery.admin.PagesDialog.prototype.options.url = '../../components/refinery/test/fixtures/pages_dialog.json'
 refinery.editor.EpicEditor.prototype.options.basePath = '../../'
 refinery.editor.EpicEditor.prototype.options.theme.base = 'styles/epiceditor/themes/base/epiceditor.css'
 refinery.editor.EpicEditor.prototype.options.theme.editor = 'styles/epiceditor/themes/preview/refinery.css'
@@ -9,8 +9,8 @@ refinery.editor.EpicEditor.prototype.options.theme.preview = 'styles/epiceditor/
 describe 'Refinery EpicEditor on Tabs', ->
 
   before (done) ->
-    container = $('#container')
-    ui = new refinery.admin.UserInterface();
+    @container = container = $('#container')
+    @ui = ui = new refinery.admin.UserInterface();
     @body_text = body_text = 'This is body text'
     @side_body_text = side_body_text = 'Some other text in Side body part'
     $.get('../../components/refinery/test/fixtures/page_new_parts_default.html', (response) ->
@@ -21,11 +21,9 @@ describe 'Refinery EpicEditor on Tabs', ->
       done()
     )
 
-    @ui = ui
-    @container = container
-
   after ->
-    #@container.empty()
+    @container.empty()
+    @ui.destroy(true)
 
   it 'have content of textarea', ->
     expect( refinery.Object.instances.get(
@@ -36,7 +34,7 @@ describe 'Refinery EpicEditor on Tabs', ->
     before ->
       @text_before = $('#page_parts_attributes_1_body').val()
       @keys_before = Object.keys(refinery.Object.instances.all())
-      @ui.reload(@container)
+      @ui.reload()
       @keys_after = Object.keys(refinery.Object.instances.all())
       @text_after = $('#page_parts_attributes_1_body').val()
 
@@ -45,3 +43,4 @@ describe 'Refinery EpicEditor on Tabs', ->
 
     it 'not change content of textareas', ->
       expect( @text_before ).to.be.equal(@text_after)
+

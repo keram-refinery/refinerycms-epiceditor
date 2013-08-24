@@ -1,6 +1,6 @@
 refinery.admin.ImagesDialog.prototype.options.url = '../../components/refinery/test/fixtures/images_dialog.json'
 refinery.admin.ResourcesDialog.prototype.options.url = '../../components/refinery/test/fixtures/resources_dialog.json'
-refinery.admin.LinksDialog.prototype.options.url = '../../components/refinery/test/fixtures/links_dialog.json'
+refinery.admin.PagesDialog.prototype.options.url = '../../components/refinery/test/fixtures/pages_dialog.json'
 
 refinery.editor.EpicEditor.prototype.options.basePath = '../../'
 refinery.editor.EpicEditor.prototype.options.theme.base = 'styles/epiceditor/themes/base/epiceditor.css'
@@ -34,7 +34,7 @@ describe 'Refinery EpicEditor', ->
     @textarea = $('#textarea')
 
   after ->
-    @container.empty()
+    #@container.empty()
 
   describe 'Instance', ->
     before ->
@@ -42,7 +42,6 @@ describe 'Refinery EpicEditor', ->
 
     after ->
       @editor.destroy(true)
-      @editor = null
 
     it 'is instance of refinery.Object', ->
       expect( @editor ).to.be.an.instanceof refinery.Object
@@ -55,7 +54,6 @@ describe 'Refinery EpicEditor', ->
 
     after ->
       @editor.destroy(true)
-      @editor = null
 
     context '#container', ->
       it 'contains div.epiceditor-holder', ->
@@ -74,211 +72,202 @@ describe 'Refinery EpicEditor', ->
 
     after ->
       @editor.destroy(true)
-      @editor = null
 
-    it 'has Images, Resources, Links dialog', ->
-      expect( @util_bar.html() ).to.have.string('Image Dialog')
-      expect( @util_bar.html() ).to.have.string('File Dialog')
-      expect( @util_bar.html() ).to.have.string('Link Dialog')
+    it 'has Resources (files) dialog', ->
+      expect( @util_bar.html() ).to.have.string('Files Dialog')
 
+    it 'has Images dialog', ->
+      expect( @util_bar.html() ).to.have.string('Images Dialog')
 
-    describe 'Insert image', ->
-      context 'via Library', ->
-        before (done) ->
-          @editable_area.empty()
-          @expectation = '![Image alt](/refinery/test/fixtures/500x350.jpg)'
-          editor = @editor
-
-          @libraryTab = ->
-            $('a[href="#existing-image-area"]').click()
-            $.getJSON '/refinery/test/fixtures/image_dialog.json', (response) ->
-              ajaxStub = sinon.stub($, 'ajax')
-              ajaxStub.returns(okResponse(response))
-
-              $('.ui-dialog .insert-button:visible').click()
-              $('.ui-dialog:visible .insert-button:visible').click()
-              done()
-
-          editor.images_dialog.on 'load', @libraryTab
-
-          @util_bar.find('button.editor-images-dialog-btn').click()
-          #expect( editor.images_dialog.is('opened') ).to.be.true
-
-        after ->
-          $.ajax.restore()
-          @editable_area.empty()
-          @editor.images_dialog.off 'load', @libraryTab
-
-        it 'include image tag to editable area', ->
-          expect( @editable_area.html() ).to.have.string(@expectation)
-
-        it 'include image tag to text area', ->
-          expect( @textarea.val() ).to.have.string(@expectation)
-
-      context 'via Url', ->
-        before (done) ->
-          @editable_area.empty()
-          url = 'http://localhost:9000/refinery-epiceditor/components/refinery/test/fixtures/sample.gif'
-          @expectation = '![](' + url + ')'
-          editor = @editor
-
-          @urlTab = ->
-            $('a[href="#external-image-area"]').click()
-            tab = editor.images_dialog.holder.find('div[aria-expanded="true"]')
-            tab.find('input[type="url"]').val(url)
-            $('.ui-dialog:visible .insert-button:visible').click()
-            done()
-
-          @util_bar.find('button.editor-images-dialog-btn').click()
-          expect( editor.images_dialog.is('opened') ).to.be.true
-
-          if editor.images_dialog.is('loaded')
-            @urlTab()
-          else
-            editor.images_dialog.on 'load', @urlTab
-
-        after ->
-          @editable_area.empty()
-          @editor.images_dialog.off 'load', @urlTab
-
-        it 'include image tag to editable area', ->
-          expect( @editable_area.html() ).to.have.string(@expectation)
-
-        it 'include image tag to text area', ->
-          expect( @textarea.val() ).to.have.string(@expectation)
+    it 'has Pages (links) dialog', ->
+      expect( @util_bar.html() ).to.have.string('Pages Dialog')
 
 
-    describe 'Insert resource', ->
-      context 'via Library', ->
-        before (done) ->
-          @editable_area.empty()
-          @expectation = 'test_file.txt'
-          editor = @editor
+  describe 'Insert image', ->
+    before (done) ->
+      @editor = new refinery.editor.EpicEditor()
+      @editor.init($('#textarea').parent())
+      @editable_area = $(@editor.editor.getElement('editor').body)
+      @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
+      @editor.images_dialog.on 'load', ->
+        done()
+      @util_bar.find('button.editor-images-dialog-btn').click()
 
-          @libraryTab = ->
-            $('a[href="#existing-resource-area"]').click()
-            $('.ui-dialog:visible .insert-button:visible').click()
-            done()
+    after ->
+      @editor.destroy(true)
 
-          if editor.file_dialog.is('loaded')
-            @libraryTab()
-          else
-            editor.file_dialog.on 'load', @libraryTab
+    context 'via Library', ->
+      before (done) ->
+        @util_bar.find('button.editor-images-dialog-btn').click()
+        $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 0 })
+        @expectation = '![Image alt](/refinery/test/fixtures/500x350.jpg)'
 
-          @util_bar.find('button.editor-resources-dialog-btn').click()
-          expect( editor.file_dialog.is('opened') ).to.be.true
+        $.getJSON '/refinery/test/fixtures/image_dialog.json', (response) ->
+          ajaxStub = sinon.stub($, 'ajax')
+          ajaxStub.returns(okResponse(response))
 
-        after ->
-          @editable_area.empty()
-          @editor.file_dialog.off 'load', @libraryTab
+          uiSelect('#image-1')
+          $('.ui-dialog:visible .insert-button:visible').click()
+          done()
 
-        it 'include resource tag to editable area', ->
-          expect( @editable_area.html() ).to.have.string(@expectation)
+      after ->
+        $.ajax.restore()
+        @editable_area.empty()
+        @textarea.val('')
 
-        it 'include resource tag to text area', ->
-          expect( @textarea.val() ).to.have.string(@expectation)
+      it 'include image tag to editable area', ->
+        expect( @editable_area.html() ).to.have.string(@expectation)
+
+      it 'include image tag to text area', ->
+        expect( @textarea.val() ).to.have.string(@expectation)
+
+    context 'via Url', ->
+      before (done) ->
+        @util_bar.find('button.editor-images-dialog-btn').click()
+        $('.ui-dialog:visible').find('.ui-tabs').tabs({ active:  1 })
+        url = 'http://localhost:9000/refinery-epiceditor/components/refinery/test/fixtures/sample.gif'
+        @expectation = '![](' + url + ')'
+
+        tab = @editor.images_dialog.holder.find('div[aria-expanded="true"]')
+        tab.find('input[type="url"]').val(url)
+        tab.find('input[type="submit"]:visible').click()
+        done()
+
+      after ->
+        @editable_area.empty()
+        @textarea.val('')
+
+      it 'include image tag to editable area', ->
+        expect( @editable_area.html() ).to.have.string(@expectation)
+
+      it 'include image tag to text area', ->
+        expect( @textarea.val() ).to.have.string(@expectation)
 
 
-    describe 'Insert link', ->
-      context 'via Library', ->
-        before (done) ->
-          @editable_area.empty()
-          @expectation = '[Home](/)'
-          editor = @editor
+  describe 'Insert resource', ->
+    before ->
+      @editor = new refinery.editor.EpicEditor()
+      @editor.init($('#textarea').parent())
+      @editable_area = $(@editor.editor.getElement('editor').body)
+      @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
 
-          @libraryTab = ->
-            $('a[href="#links-dialog-pages"]').click()
-            $('.ui-dialog:visible .insert-button:visible').click()
-            done()
+    after ->
+      @editor.destroy(true)
 
-          if editor.link_dialog.is('loaded')
-            @libraryTab()
-          else
-            editor.link_dialog.on 'load', @libraryTab
+    context 'via Library', ->
+      before (done) ->
+        @expectation = 'programming_in_coffeescript.pdf'
+        editor = @editor
 
-          @util_bar.find('button.editor-links-dialog-btn').click()
-          expect( editor.link_dialog.is('opened') ).to.be.true
+        @libraryTab = ->
+          $('a[href="#existing-resource-area"]').click()
+          uiSelect($('.records li').first())
+          done()
 
-        after ->
-          @editable_area.empty()
-          @editor.link_dialog.off 'load', @libraryTab
+        editor.file_dialog.on 'load', @libraryTab
+
+        @util_bar.find('button.editor-resources-dialog-btn').click()
+        expect( editor.file_dialog.is('opened') ).to.be.true
+
+      after ->
+        @editable_area.empty()
+        @textarea.val('')
+        @editor.file_dialog.off 'load', @libraryTab
+
+      it 'include resource tag to editable area', ->
+        expect( @editable_area.html() ).to.have.string(@expectation)
+
+      it 'include resource tag to text area', ->
+        expect( @textarea.val() ).to.have.string(@expectation)
 
 
-        it 'include link tag to editable area', ->
-          expect( @editable_area.html() ).to.have.string(@expectation)
+  describe 'Insert link', ->
+    before (done) ->
+      @editor = new refinery.editor.EpicEditor()
+      @editor.init($('#textarea').parent())
+      @editable_area = $(@editor.editor.getElement('editor').body)
+      @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
+      @editor.pages_dialog.on 'load', ->
+        done()
 
-        it 'include link tag to text area', ->
-          expect( @textarea.val() ).to.have.string(@expectation)
+      @util_bar.find('button.editor-pages-dialog-btn').click()
 
-      context 'via Url', ->
-        before (done) ->
-          url = 'http://localhost:9000/refinery-epiceditor/'
-          @expectation = '[localhost:9000/refinery-epiceditor/](' + url + ')'
-          editor = @editor
+    after ->
+      @editor.destroy(true)
 
-          @urlTab = ->
-            $('a[href="#links-dialog-website"]').click()
-            tab = editor.link_dialog.holder.find('div[aria-expanded="true"]')
-            tab.find('input[type="url"]').val(url)
-            $('.ui-dialog:visible .insert-button:visible').click()
-            done()
+    context 'via Library', ->
+      before (done) ->
+        @util_bar.find('button.editor-pages-dialog-btn').click()
+        $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 0  })
+        @expectation = '[Home](/)'
+        @editor.pages_dialog.on 'insert', ->
+          done()
+        uiSelect($('.records li').first())
 
-          @util_bar.find('button.editor-links-dialog-btn').click()
-          expect( editor.link_dialog.is('opened') ).to.be.true
+      after ->
+        @editable_area.empty()
+        @textarea.val('')
 
-          if editor.link_dialog.is('loaded')
-            @urlTab()
-          else
-            editor.link_dialog.on 'load', @urlTab
+      it 'include link tag to editable area', ->
+        expect( @editable_area.html() ).to.have.string(@expectation)
 
-        after ->
-          @editable_area.empty()
-          @editor.link_dialog.off 'load', @urlTab
+      it 'include link tag to text area', ->
+        expect( @textarea.val() ).to.have.string(@expectation)
 
-        it 'include link tag to editable area', ->
-          expect( @editable_area.html() ).to.have.string(@expectation)
 
-        it 'include link tag to text area', ->
-          expect( @textarea.val() ).to.have.string(@expectation)
+    context 'via Url', ->
+      before (done) ->
+        @util_bar.find('button.editor-pages-dialog-btn').click()
+        $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 1 })
+        url = 'http://localhost:9000/refinery-epiceditor/'
+        @expectation = '[localhost:9000/refinery-epiceditor/](' + url + ')'
 
-      context 'as Email link', ->
-        before (done) ->
-          @editable_area.empty()
-          email = 'lorem@ipsum.sk'
-          subject = 'Hello Philip'
-          body = 'some body'
-          @expectation = '[' + email + '](mailto:' +
-            encodeURIComponent(email) +
-            '?subject=' + encodeURIComponent(subject) +
-            '&amp;body=' + encodeURIComponent(body) + ')'
-          editor = @editor
+        $('a[href="#pages-dialog-website"]').click()
+        tab = @editor.pages_dialog.holder.find('div[aria-expanded="true"]')
+        tab.find('input[type="url"]').val(url)
+        tab.find('input[type="submit"]').click()
+        done()
 
-          @emailTab = ->
-            $('a[href="#links-dialog-email"]').click()
-            tab = editor.link_dialog.holder.find('div[aria-expanded="true"]')
-            tab.find('#email_address_text').val(email)
-            tab.find('#email_default_subject_text').val(subject)
-            tab.find('#email_default_body_text').val(body)
-            $('.ui-dialog:visible .insert-button:visible').click()
-            done()
+      after ->
+        @editable_area.empty()
+        @textarea.val('')
 
-          @util_bar.find('button.editor-links-dialog-btn').click()
-          expect( editor.link_dialog.is('opened') ).to.be.true
+      it 'include link tag to editable area', ->
+        expect( @editable_area.html() ).to.have.string(@expectation)
 
-          if editor.link_dialog.is('loaded')
-            @emailTab()
-          else
-            editor.link_dialog.on 'load', @emailTab
+      it 'include link tag to text area', ->
+        expect( @textarea.val() ).to.have.string(@expectation)
 
-        after ->
-          @editable_area.empty()
-          @editor.link_dialog.off 'load', @emailTab
 
-        it 'include link tag to editable area', ->
-          expect( @editable_area.html() ).to.have.string(@expectation)
+    context 'as Email link', ->
+      before (done) ->
+        @util_bar.find('button.editor-pages-dialog-btn').click()
+        $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 2 })
+        email = 'lorem@ipsum.sk'
+        subject = 'Hello Philip'
+        body = 'some body'
+        @expectation = '[' + email + '](mailto:' +
+          encodeURIComponent(email) +
+          '?subject=' + encodeURIComponent(subject) +
+          '&amp;body=' + encodeURIComponent(body) + ')'
 
-        it 'include link tag to text area', ->
-          expect( @textarea.val() ).to.have.string(@expectation)
+        $('a[href="#pages-dialog-email"]').click()
+        tab = @editor.pages_dialog.holder.find('div[aria-expanded="true"]')
+        tab.find('#email_address_text').val(email)
+        tab.find('#email_default_subject_text').val(subject)
+        tab.find('#email_default_body_text').val(body)
+        tab.find('input[type="submit"]').click()
+        done()
+
+      after ->
+        @editable_area.empty()
+        @textarea.val('')
+
+      it 'include link tag to editable area', ->
+        expect( @editable_area.html() ).to.have.string(@expectation)
+
+      it 'include link tag to text area', ->
+        expect( @textarea.val() ).to.have.string(@expectation)
 
 
   describe 'toggle button', ->
@@ -295,6 +284,7 @@ describe 'Refinery EpicEditor', ->
     after ->
       @editor.destroy(true)
       @editable_area.empty()
+      @textarea.val('')
 
     context 'first click', ->
       it 'shows textarea instead of editor', ->

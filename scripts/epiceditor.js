@@ -100,8 +100,8 @@
                 function (img) {
                     var tpl = '![%alt](%url)';
 
-                    if (img.type === 'external') {
-                        tpl = tpl.replace('%alt', '');
+                    if (img.url) {
+                        tpl = tpl.replace('%alt', /** @type {string} */(img.alt));
                         tpl = tpl.replace('%url', /** @type {string} */(img.url));
                         that.insert(tpl);
                     } else {
@@ -115,11 +115,26 @@
 
         init_image_dialog: function (image_id) {
             var that = this,
-                dialog = refinery('admin.ImageDialog', {
-                    'url': '/refinery/dialogs/image/' + image_id
-                });
+                dialog, buttons;
 
-            dialog.init();
+
+            buttons = [ {
+                'text': 'Insert',
+                'click': function () {
+                    dialog.insert();
+                }
+            }, {
+                'text': 'Back to the library',
+                'click': function () {
+                    dialog.close();
+                    that.images_dialog.open();
+                }
+            }];
+
+            dialog = refinery('admin.ImageDialog', {
+                    'url': '/refinery/dialogs/image/' + image_id,
+                    'buttons': buttons
+                }).init();
 
             dialog.on('insert',
                 /** @param {image_dialog_object} img */
@@ -165,20 +180,13 @@
             file_dialog.on('insert',
                 /** @param {file_dialog_object} file */
                 function (file) {
-                    var tpl = '<a href="%url" class="file">%title</a>';
-                    tpl = tpl.replace('%url', file.url);
+                    var tpl;
 
-                    switch (file.type) {
-                    case 'external':
-
-                        break;
-                    case 'library':
-                        tpl = tpl.replace('%title', file.html);
-
-                        break;
-                    default:
-                        break;
-                    }
+                    tpl = '<a href="' + file.url + '" ' +
+                            'class="file ' + file.ext + '" ' +
+                            'title="' + file.name + ' - ' + file.size + ' bytes " >' +
+                            file.name +
+                            '</a>';
 
                     that.insert(tpl);
                 }
@@ -191,29 +199,29 @@
          *
          * @return {undefined}
          */
-        init_links_dialog: function () {
+        init_pages_dialog: function () {
             var that = this,
                 util_bar = that.util_bar,
-                link_btn, link_dialog;
+                pages_btn, pages_dialog;
 
-            link_btn = $('<button/>', {
-                'title': t('refinery.editor.links_dialog_button_title'),
-                'class': 'editor-links-dialog-btn refinery-btn'
+            pages_btn = $('<button/>', {
+                'title': t('refinery.editor.pages_dialog_button_title'),
+                'class': 'editor-pages-dialog-btn refinery-btn'
             }).prependTo(util_bar);
 
-            link_dialog = refinery('admin.LinksDialog');
+            pages_dialog = refinery('admin.PagesDialog');
 
-            link_btn.on('click', function (e) {
+            pages_btn.on('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                link_dialog.init().open();
+                pages_dialog.init().open();
 
                 return false;
             });
 
-            link_dialog.on('insert',
-                /** @param {link_dialog_object} link */
+            pages_dialog.on('insert',
+                /** @param {pages_dialog_object} link */
                 function (link) {
                     var tpl = '[%title](%url)';
 
@@ -224,7 +232,7 @@
                 }
             );
 
-            that.link_dialog = link_dialog;
+            that.pages_dialog = pages_dialog;
         },
 
         destroy: function (removeGlobalReference) {
@@ -248,8 +256,8 @@
                     this.file_dialog.destroy(true);
                 }
 
-                if (this.link_dialog) {
-                    this.link_dialog.destroy(true);
+                if (this.pages_dialog) {
+                    this.pages_dialog.destroy(true);
                 }
 
                 this.holder.find('.epiceditor-holder').remove();
@@ -317,7 +325,7 @@
 
                 that.init_images_dialog();
                 that.init_resources_dialog();
-                that.init_links_dialog();
+                that.init_pages_dialog();
 
                 that.is({'initialised': true, 'initialising': false});
                 that.trigger('init');

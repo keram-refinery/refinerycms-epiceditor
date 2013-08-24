@@ -36,7 +36,7 @@ var dir = __dirname,
                                     ],
                         'language_in': 'ECMASCRIPT5_STRICT',
                         'summary_detail_level': 3,
-                        'output_wrapper': '"(function(window, $, refinery){%output%}(window, jQuery, window.refinery));"'
+                        'output_wrapper': '"(function(window, $){%output%}(window, jQuery));"'
                     }
                 },
                 'src': [
