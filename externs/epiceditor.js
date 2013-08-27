@@ -8,6 +8,7 @@ function EpicEditor (options) {
 
 EpicEditor.prototype = {
     load: function () {},
+    unload: function () {},
     edit: function () {},
     reflow: function () {},
     importFile: function (name, content, kind, meta) {},

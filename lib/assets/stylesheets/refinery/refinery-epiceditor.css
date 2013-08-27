@@ -1,4 +1,10 @@
-.epiceditor-holder {
+.epiceditor-holder,
+.epiceditor-on textarea {
+  display: none;
+}
+
+.epiceditor-on .epiceditor-holder {
+  display: block;
   min-height: 400px;
   margin-bottom: 0.5em;
 }

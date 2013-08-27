@@ -145,15 +145,15 @@ describe 'Refinery EpicEditor', ->
           uiSelect($('.records li').first())
           done()
 
-        editor.file_dialog.on 'load', @libraryTab
+        editor.resources_dialog.on 'load', @libraryTab
 
         @util_bar.find('button.editor-resources-dialog-btn').click()
-        expect( editor.file_dialog.is('opened') ).to.be.true
+        expect( editor.resources_dialog.is('opened') ).to.be.true
 
       after ->
         @editable_area.empty()
         @textarea.val('')
-        @editor.file_dialog.off 'load', @libraryTab
+        @editor.resources_dialog.off 'load', @libraryTab
 
       it 'include resource tag to editable area', ->
         expect( @editable_area.html() ).to.have.string(@expectation)
