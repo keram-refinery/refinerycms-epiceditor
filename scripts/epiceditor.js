@@ -121,7 +121,7 @@
             buttons = [ {
                 'text': 'Insert',
                 'click': function () {
-                    dialog.insert();
+                    dialog.insert(dialog.holder);
                 }
             }, {
                 'text': 'Back to the library',
