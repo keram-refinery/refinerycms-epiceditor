@@ -37,11 +37,11 @@ describe 'Refinery EpicEditor', ->
       @editor.destroy(true)
 
     context '#container', ->
-      it 'contains div.epiceditor-holder', ->
-        expect( $('div.epiceditor-holder').length ).to.eq(1)
+      it 'contains div.wysiwyg-editor-holder', ->
+        expect( $('div.wysiwyg-editor-holder').length ).to.eq(1)
 
       it '#textarea is not visible', ->
-        expect( $('#textarea:visible').length ).to.eq(0)
+        expect( $('#textarea').parent().hasClass('wysiwyg-editor-on') ).to.be.true
 
 
   describe 'Dialogs', ->
@@ -72,6 +72,8 @@ describe 'Refinery EpicEditor', ->
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
       @editor.images_dialog.on 'load', ->
         done()
+      @editor.images_dialog.on 'insert', (img) ->
+
       @util_bar.find('button.editor-images-dialog-btn').click()
 
     after ->
@@ -269,13 +271,11 @@ describe 'Refinery EpicEditor', ->
 
     context 'first click', ->
       it 'shows textarea instead of editor', ->
-        expect( $('#textarea').is(':visible') ).to.be.true
-        expect( $('.epiceditor-holder').is(':visible') ).to.be.false
+        expect( $('#textarea').parent().hasClass('wysiwyg-editor-on') ).to.be.false
 
     context 'second click', ->
       before ->
         $('.epiceditor-toggle-button').click()
 
       it 'shows again editor', ->
-        expect( $('#textarea').is(':visible') ).to.be.false
-        expect( $('.epiceditor-holder').is(':visible') ).to.be.true
+        expect( $('#textarea').parent().hasClass('wysiwyg-editor-on') ).to.be.true

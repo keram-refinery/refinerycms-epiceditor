@@ -117,7 +117,6 @@
             var that = this,
                 dialog, buttons;
 
-
             buttons = [ {
                 'text': 'Insert',
                 'click': function () {
@@ -237,7 +236,7 @@
         },
 
         unload_editor: function () {
-            this.holder.removeClass('epiceditor-on');
+            this.holder.removeClass('wysiwyg-editor-on');
             this.images_dialog.destroy();
             this.resources_dialog.destroy();
             this.pages_dialog.destroy();
@@ -260,16 +259,14 @@
                         this.unload_editor();
 
                     } catch (e) {
-                        if (typeof console === 'object' && typeof console.log === 'function') {
-                            console.log(e);
-                        }
+                        refinery.log(e);
                     }
 
                     this.editor = null;
                     textarea.val(tmp);
                 }
 
-                this.holder.find('.epiceditor-holder').remove();
+                this.holder.find('.wysiwyg-editor-holder').remove();
                 this.toggle_button.remove();
             }
 
@@ -291,7 +288,7 @@
             function load_editor () {
                 var util_bar;
 
-                holder.addClass('epiceditor-on');
+                holder.addClass('wysiwyg-editor-on');
 
                 editor.remove(options.file.name);
                 editor.load();
@@ -307,7 +304,7 @@
 
                 e.preventDefault();
 
-                if (holder.hasClass('epiceditor-on')) {
+                if (holder.hasClass('wysiwyg-editor-on')) {
                     that.unload_editor();
                     textarea.val(tmp);
                 } else {
@@ -334,7 +331,7 @@
                 that.attach_holder(holder);
 
                 editor_holder = $('<div/>', {
-                    'class': 'epiceditor-holder'
+                    'class': 'wysiwyg-editor-holder'
                 }).appendTo(holder);
 
                 that.options.container = editor_holder.get(0);
@@ -365,10 +362,8 @@
     refinery.admin.ui.editorEpicEditor = function (holder) {
         var tabs = holder.find('.ui-tabs'), editors = [];
 
-        holder.find('textarea.replace-with-editor').each(function () {
-            var holder = $(this).parent();
-
-            editors[editors.length] = refinery('editor.EpicEditor').init(holder);
+        holder.find('.wysiwyg-editor-wrapper').each(function () {
+            editors[editors.length] = refinery('editor.EpicEditor').init($(this));
         });
 
         tabs.on('tabsactivate', function () {

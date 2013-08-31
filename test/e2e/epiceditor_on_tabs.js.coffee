@@ -15,8 +15,8 @@ describe 'Refinery EpicEditor on Tabs', ->
     @side_body_text = side_body_text = 'Some other text in Side body part'
     $.get('../../components/refinery/test/fixtures/page_new_parts_default.html', (response) ->
       container.html(response)
-      $('#page_parts_attributes_1_body').val(body_text)
-      $('#page_parts_attributes_2_body').val(side_body_text)
+      $('#page_parts_attributes_2_body').val(body_text)
+      $('#page_parts_attributes_3_body').val(side_body_text)
       refinery.PageUI.init(container)
       done()
     )
@@ -27,7 +27,7 @@ describe 'Refinery EpicEditor on Tabs', ->
 
   # google chrome returns This&nbsp;is&nbsp;body&nbsp;text which is not our bug probably
   it 'have content of textarea', ->
-    editor = refinery.Object.instances.get( $('#page_part_body').data('refinery-instances') ).editor
+    editor = refinery.Object.instances.get( $('#page_part_body').find('.wysiwyg-editor-wrapper').data('refinery-instances')[0] ).editor
     expect( $(editor.getElement('editor').body).text().replace(/\s/g, '') ).to.be.equal(@body_text.replace(/\s/g, ''))
 
   describe 'ui destroy and reinitialize', ->

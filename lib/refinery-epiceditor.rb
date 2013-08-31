@@ -8,7 +8,7 @@ module Refinery
 
       initializer 'register refinery_epiceditor plugin' do
         ::Refinery::Plugin.register do |plugin|
-          plugin.name = 'refinery_epiceditor'
+          plugin.name = 'epiceditor'
           plugin.hide_from_menu = true
           plugin.always_allow_access = true
           plugin.pathname = root
