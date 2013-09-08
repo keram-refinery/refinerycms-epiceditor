@@ -45,11 +45,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">65.90</p>
+      <p class="stat">66.16</p>
     </div>
     <div class="span6">
       <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">380</p>
+      <p class="stat">375</p>
     </div>
   </div>
   <div class="row historical">
@@ -63,11 +63,11 @@
   <div class="row">
     <div class="span6">
       <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">33.48</p>
+      <p class="stat">28.99</p>
     </div>
     <div class="span6">
       <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">2.72</p>
+      <p class="stat">2.64</p>
     </div>
   </div>
 </div>
@@ -209,7 +209,6 @@
             var that = this,
                 dialog, buttons;
 
-
             buttons = [ {
                 &#039;text&#039;: &#039;Insert&#039;,
                 &#039;click&#039;: function () {
@@ -329,14 +328,14 @@
         },
 
         unload_editor: function () {
-            this.holder.removeClass(&#039;epiceditor-on&#039;);
+            this.holder.removeClass(&#039;wysiwyg-editor-on&#039;);
             this.images_dialog.destroy();
             this.resources_dialog.destroy();
             this.pages_dialog.destroy();
             this.editor.unload();
         },
 
-        destroy: function (removeGlobalReference) {
+        destroy: function () {
             var textarea,
                 tmp;
 
@@ -352,20 +351,18 @@
                         this.unload_editor();
 
                     } catch (e) {
-                        if (typeof console === &#039;object&#039; &amp;&amp; typeof console.log === &#039;function&#039;) {
-                            console.log(e);
-                        }
+                        refinery.log(e);
                     }
 
                     this.editor = null;
                     textarea.val(tmp);
                 }
 
-                this.holder.find(&#039;.epiceditor-holder&#039;).remove();
+                this.holder.find(&#039;.wysiwyg-editor-holder&#039;).remove();
                 this.toggle_button.remove();
             }
 
-            this._destroy(removeGlobalReference);
+            this._destroy();
 
             return this;
         },
@@ -383,7 +380,7 @@
             function load_editor () {
                 var util_bar;
 
-                holder.addClass(&#039;epiceditor-on&#039;);
+                holder.addClass(&#039;wysiwyg-editor-on&#039;);
 
                 editor.remove(options.file.name);
                 editor.load();
@@ -399,7 +396,7 @@
 
                 e.preventDefault();
 
-                if (holder.hasClass(&#039;epiceditor-on&#039;)) {
+                if (holder.hasClass(&#039;wysiwyg-editor-on&#039;)) {
                     that.unload_editor();
                     textarea.val(tmp);
                 } else {
@@ -426,7 +423,7 @@
                 that.attach_holder(holder);
 
                 editor_holder = $(&#039;&lt;div/&gt;&#039;, {
-                    &#039;class&#039;: &#039;epiceditor-holder&#039;
+                    &#039;class&#039;: &#039;wysiwyg-editor-holder&#039;
                 }).appendTo(holder);
 
                 that.options.container = editor_holder.get(0);
@@ -457,10 +454,8 @@
     refinery.admin.ui.editorEpicEditor = function (holder) {
         var tabs = holder.find(&#039;.ui-tabs&#039;), editors = [];
 
-        holder.find(&#039;textarea.replace-with-editor&#039;).each(function () {
-            var holder = $(this).parent();
-
-            editors[editors.length] = refinery(&#039;editor.EpicEditor&#039;).init(holder);
+        holder.find(&#039;.wysiwyg-editor-wrapper&#039;).each(function () {
+            editors[editors.length] = refinery(&#039;editor.EpicEditor&#039;).init($(this));
         });
 
         tabs.on(&#039;tabsactivate&#039;, function () {
