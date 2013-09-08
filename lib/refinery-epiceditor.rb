@@ -1,4 +1,5 @@
 require 'redcarpet'
+require 'refinery/epiceditor/markdown_content_renderer'
 
 module Refinery
   module Epiceditor
@@ -33,19 +34,8 @@ module Refinery
         Refinery::Core.config.register_admin_stylesheet 'refinery/refinery-epiceditor'
       end
 
-      initializer 'monkey patch PagePartSectionPresenter' do
-        Refinery::Pages::PagePartSectionPresenter.class_eval do
-          def initialize(page_part)
-            super()
-            self.fallback_html = markdown.render(page_part.body).html_safe if page_part.body
-            self.id = page_part.title
-            self.hide unless page_part.active
-          end
-
-          def markdown
-            @@markdown ||= Redcarpet::Markdown.new(Redcarpet::Render::HTML, :autolink => true)
-          end
-        end
+      initializer 'set content renderer to MarkdownContentRenderer' do
+        Refinery.content_renderer = Refinery::EpicEditor::MarkdownContentRenderer.new(Refinery.content_renderer)
       end
 
     end
