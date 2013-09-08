@@ -243,7 +243,7 @@
             this.editor.unload();
         },
 
-        destroy: function (removeGlobalReference) {
+        destroy: function () {
             var textarea,
                 tmp;
 
@@ -270,7 +270,7 @@
                 this.toggle_button.remove();
             }
 
-            this._destroy(removeGlobalReference);
+            this._destroy();
 
             return this;
         },
