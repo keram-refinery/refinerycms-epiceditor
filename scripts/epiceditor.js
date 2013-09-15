@@ -7,7 +7,7 @@
 
     /**
      * @constructor
-     * @class refinery.editor.EpicEditor
+     * @class refinery.epiceditor.EpicEditor
      * @expose
      * @extends {refinery.Object}
      */
@@ -15,7 +15,7 @@
 
         name: 'EpicEditor',
 
-        module: 'editor',
+        module: 'epiceditor',
 
         /** @typedef {epiceditor_config} */
         options: {
@@ -47,9 +47,9 @@
                 'preview': 80
             },
             string: {
-                'togglePreview': t('refinery.editor.toggle_preview_mode'),
-                'toggleEdit': t('refinery.editor.toggle_edit_mode'),
-                'toggleFullscreen': t('refinery.editor.enter_fullscreen')
+                'togglePreview': t('refinery.epiceditor.toggle_preview_mode'),
+                'toggleEdit': t('refinery.epiceditor.toggle_edit_mode'),
+                'toggleFullscreen': t('refinery.epiceditor.enter_fullscreen')
             }
         },
 
@@ -81,7 +81,7 @@
                 images_btn, images_dialog;
 
             images_btn = $('<button/>', {
-                'title': t('refinery.editor.images_dialog_button_title'),
+                'title': t('refinery.epiceditor.images_dialog_button_title'),
                 'class': 'editor-images-dialog-btn refinery-btn'
             }).prependTo(util_bar);
 
@@ -162,7 +162,7 @@
                 file_btn, resources_dialog;
 
             file_btn = $('<button/>', {
-                'title': t('refinery.editor.resources_dialog_button_title'),
+                'title': t('refinery.epiceditor.resources_dialog_button_title'),
                 'class': 'editor-resources-dialog-btn refinery-btn'
             }).prependTo(util_bar);
 
@@ -205,7 +205,7 @@
                 pages_btn, pages_dialog;
 
             pages_btn = $('<button/>', {
-                'title': t('refinery.editor.pages_dialog_button_title'),
+                'title': t('refinery.epiceditor.pages_dialog_button_title'),
                 'class': 'editor-pages-dialog-btn refinery-btn'
             }).prependTo(util_bar);
 
@@ -339,7 +339,7 @@
 
                 that.toggle_button = $('<button/>', {
                     'class': 'epiceditor-toggle-button',
-                    'text': t('refinery.editor.toggle_editor')
+                    'text': t('refinery.epiceditor.toggle_editor')
                 }).appendTo(holder);
 
                 that.init_editor();
@@ -363,7 +363,7 @@
         var tabs = holder.find('.ui-tabs'), editors = [];
 
         holder.find('.wysiwyg-editor-wrapper').each(function () {
-            editors[editors.length] = refinery('editor.EpicEditor').init($(this));
+            editors[editors.length] = refinery('epiceditor.EpicEditor').init($(this));
         });
 
         tabs.on('tabsactivate', function () {

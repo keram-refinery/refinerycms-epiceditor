@@ -10,14 +10,14 @@ var dir = __dirname,
         'watch': [{
             'js': {
                 'files': [scripts_dir + '/*.js'],
-                'tasks': ['closureCompiler:refinery-epiceditor_js',
-                            'concat:refinery-epiceditor_js',
-                            'copy:refinery-epiceditor_js',
+                'tasks': ['closureCompiler:refinerycms-epiceditor_js',
+                            'concat:refinerycms-epiceditor_js',
+                            'copy:refinerycms-epiceditor_js',
                             'livereload']
             },
             'styles': {
                 'files': [styles_dir + '/{,*/}*.css', styles_dir + '/{,*/}*.css.scss'],
-                'tasks': ['assetUrl:refinery-epiceditor_styles', 'copy:refinery-epiceditor_styles']
+                'tasks': ['assetUrl:refinerycms-epiceditor_styles', 'copy:refinerycms-epiceditor_styles']
             }
         }],
         'closureCompiler': [{
@@ -43,7 +43,7 @@ var dir = __dirname,
                 'src': [
                     'scripts/*.js'
                 ],
-                'dest': '.tmp/assets/javascripts/refinery/refinery-epiceditor.min.js'
+                'dest': '.tmp/assets/javascripts/epiceditor.min.js'
             }
         }],
 
@@ -52,7 +52,7 @@ var dir = __dirname,
                 'src': [
                     'scripts/*.js'
                 ],
-                'dest': '.tmp/assets/javascripts/refinery/refinery-epiceditor.all.js'
+                'dest': '.tmp/assets/javascripts/epiceditor.all.js'
             }
         }],
 
@@ -62,7 +62,7 @@ var dir = __dirname,
                     'expand': true,
                     'dot': true,
                     'cwd': dir + '/.tmp/assets/javascripts/',
-                    'dest': build_dir + '/javascripts/',
+                    'dest': build_dir + '/javascripts/refinery/epiceditor/',
                     'src': [
                         '**'
                     ]
@@ -74,7 +74,7 @@ var dir = __dirname,
                     'expand': true,
                     'dot': true,
                     'cwd': dir + '/.tmp/assets/stylesheets/',
-                    'dest': build_dir + '/stylesheets/',
+                    'dest': build_dir + '/stylesheets/refinery/epiceditor/',
                     'src': [
                         '**'
                     ]
@@ -86,7 +86,7 @@ var dir = __dirname,
                     'expand': true,
                     'dot': true,
                     'cwd': dir + '/i18n/',
-                    'dest': build_dir + '/javascripts/refinery/i18n/',
+                    'dest': build_dir + '/javascripts/refinery/i18n/epiceditor/',
                     'src': [
                         '*.js'
                     ]

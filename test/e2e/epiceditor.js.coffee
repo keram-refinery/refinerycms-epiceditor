@@ -1,11 +1,11 @@
-refinery.admin.ImagesDialog.prototype.options.url = '../../components/refinery/test/fixtures/images_dialog.json'
-refinery.admin.ResourcesDialog.prototype.options.url = '../../components/refinery/test/fixtures/resources_dialog.json'
-refinery.admin.PagesDialog.prototype.options.url = '../../components/refinery/test/fixtures/pages_dialog.json'
+refinery.admin.ImagesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/images_dialog.json'
+refinery.admin.ResourcesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/resources_dialog.json'
+refinery.admin.PagesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/pages_dialog.json'
 
-refinery.editor.EpicEditor.prototype.options.basePath = '../../'
-refinery.editor.EpicEditor.prototype.options.theme.base = 'styles/epiceditor/themes/base/epiceditor.css'
-refinery.editor.EpicEditor.prototype.options.theme.editor = 'styles/epiceditor/themes/preview/refinery.css'
-refinery.editor.EpicEditor.prototype.options.theme.preview = 'styles/epiceditor/themes/editor/refinery.css'
+refinery.epiceditor.EpicEditor.prototype.options.basePath = '../../'
+refinery.epiceditor.EpicEditor.prototype.options.theme.base = 'styles/themes/base/epiceditor.css'
+refinery.epiceditor.EpicEditor.prototype.options.theme.editor = 'styles/themes/preview/refinery.css'
+refinery.epiceditor.EpicEditor.prototype.options.theme.preview = 'styles/themes/editor/refinery.css'
 
 describe 'Refinery EpicEditor', ->
 
@@ -19,7 +19,7 @@ describe 'Refinery EpicEditor', ->
 
   describe 'Instance', ->
     before ->
-      @editor = new refinery.editor.EpicEditor()
+      @editor = new refinery.epiceditor.EpicEditor()
 
     after ->
       @editor.destroy(true)
@@ -30,7 +30,7 @@ describe 'Refinery EpicEditor', ->
 
   describe 'Initialization', ->
     before ->
-      @editor = new refinery.editor.EpicEditor()
+      @editor = new refinery.epiceditor.EpicEditor()
       @editor.init($('#textarea').parent())
 
     after ->
@@ -46,7 +46,7 @@ describe 'Refinery EpicEditor', ->
 
   describe 'Dialogs', ->
     before ->
-      @editor = new refinery.editor.EpicEditor()
+      @editor = new refinery.epiceditor.EpicEditor()
       @editor.init($('#textarea').parent())
       @editable_area = $(@editor.editor.getElement('editor').body)
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
@@ -66,7 +66,7 @@ describe 'Refinery EpicEditor', ->
 
   describe 'Insert image', ->
     before (done) ->
-      @editor = new refinery.editor.EpicEditor()
+      @editor = new refinery.epiceditor.EpicEditor()
       @editor.init($('#textarea').parent())
       @editable_area = $(@editor.editor.getElement('editor').body)
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
@@ -83,9 +83,9 @@ describe 'Refinery EpicEditor', ->
       before (done) ->
         @util_bar.find('button.editor-images-dialog-btn').click()
         $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 0 })
-        @expectation = '![Image alt](/refinery/test/fixtures/500x350.jpg)'
+        @expectation = '![Image alt](/refinerycms-clientside/test/fixtures/500x350.jpg)'
 
-        $.getJSON '/refinery/test/fixtures/image_dialog.json', (response) ->
+        $.getJSON '/refinerycms-clientside/test/fixtures/image_dialog.json', (response) ->
           ajaxStub = sinon.stub($, 'ajax')
           ajaxStub.returns(okResponse(response))
 
@@ -108,7 +108,7 @@ describe 'Refinery EpicEditor', ->
       before (done) ->
         @util_bar.find('button.editor-images-dialog-btn').click()
         $('.ui-dialog:visible').find('.ui-tabs').tabs({ active:  1 })
-        url = 'http://localhost:9000/refinery-epiceditor/components/refinery/test/fixtures/sample.gif'
+        url = 'http://localhost:9000/refinery-epiceditor/components/refinerycms-clientside/test/fixtures/sample.gif'
         @expectation = '![](' + url + ')'
 
         tab = @editor.images_dialog.holder.find('div[aria-expanded="true"]')
@@ -129,7 +129,7 @@ describe 'Refinery EpicEditor', ->
 
   describe 'Insert resource', ->
     before ->
-      @editor = new refinery.editor.EpicEditor()
+      @editor = new refinery.epiceditor.EpicEditor()
       @editor.init($('#textarea').parent())
       @editable_area = $(@editor.editor.getElement('editor').body)
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
@@ -166,7 +166,7 @@ describe 'Refinery EpicEditor', ->
 
   describe 'Insert link', ->
     before (done) ->
-      @editor = new refinery.editor.EpicEditor()
+      @editor = new refinery.epiceditor.EpicEditor()
       @editor.init($('#textarea').parent())
       @editable_area = $(@editor.editor.getElement('editor').body)
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
@@ -255,7 +255,7 @@ describe 'Refinery EpicEditor', ->
 
   describe 'toggle button', ->
     before (done) ->
-      @editor = editor = new refinery.editor.EpicEditor()
+      @editor = editor = new refinery.epiceditor.EpicEditor()
       @editor.init($('#textarea').parent())
       @editable_area = $(@editor.editor.getElement('editor').body)
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');

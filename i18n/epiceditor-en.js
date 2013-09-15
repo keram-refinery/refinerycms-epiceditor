@@ -6,4 +6,4 @@ i18n.register({
     'resources_dialog_button_title': 'Files Dialog',
     'pages_dialog_button_title': 'Pages Dialog',
     'toggle_editor': 'Toggle Editor'
-}, 'refinery.editor');
+}, 'refinery.epiceditor');

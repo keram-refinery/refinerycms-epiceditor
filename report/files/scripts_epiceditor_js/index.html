@@ -99,7 +99,7 @@
 
     /**
      * @constructor
-     * @class refinery.editor.EpicEditor
+     * @class refinery.epiceditor.EpicEditor
      * @expose
      * @extends {refinery.Object}
      */
@@ -139,9 +139,9 @@
                 &#039;preview&#039;: 80
             },
             string: {
-                &#039;togglePreview&#039;: t(&#039;refinery.editor.toggle_preview_mode&#039;),
-                &#039;toggleEdit&#039;: t(&#039;refinery.editor.toggle_edit_mode&#039;),
-                &#039;toggleFullscreen&#039;: t(&#039;refinery.editor.enter_fullscreen&#039;)
+                &#039;togglePreview&#039;: t(&#039;refinery.epiceditor.toggle_preview_mode&#039;),
+                &#039;toggleEdit&#039;: t(&#039;refinery.epiceditor.toggle_edit_mode&#039;),
+                &#039;toggleFullscreen&#039;: t(&#039;refinery.epiceditor.enter_fullscreen&#039;)
             }
         },
 
@@ -173,7 +173,7 @@
                 images_btn, images_dialog;
 
             images_btn = $(&#039;&lt;button/&gt;&#039;, {
-                &#039;title&#039;: t(&#039;refinery.editor.images_dialog_button_title&#039;),
+                &#039;title&#039;: t(&#039;refinery.epiceditor.images_dialog_button_title&#039;),
                 &#039;class&#039;: &#039;editor-images-dialog-btn refinery-btn&#039;
             }).prependTo(util_bar);
 
@@ -254,7 +254,7 @@
                 file_btn, resources_dialog;
 
             file_btn = $(&#039;&lt;button/&gt;&#039;, {
-                &#039;title&#039;: t(&#039;refinery.editor.resources_dialog_button_title&#039;),
+                &#039;title&#039;: t(&#039;refinery.epiceditor.resources_dialog_button_title&#039;),
                 &#039;class&#039;: &#039;editor-resources-dialog-btn refinery-btn&#039;
             }).prependTo(util_bar);
 
@@ -297,7 +297,7 @@
                 pages_btn, pages_dialog;
 
             pages_btn = $(&#039;&lt;button/&gt;&#039;, {
-                &#039;title&#039;: t(&#039;refinery.editor.pages_dialog_button_title&#039;),
+                &#039;title&#039;: t(&#039;refinery.epiceditor.pages_dialog_button_title&#039;),
                 &#039;class&#039;: &#039;editor-pages-dialog-btn refinery-btn&#039;
             }).prependTo(util_bar);
 
@@ -431,7 +431,7 @@
 
                 that.toggle_button = $(&#039;&lt;button/&gt;&#039;, {
                     &#039;class&#039;: &#039;epiceditor-toggle-button&#039;,
-                    &#039;text&#039;: t(&#039;refinery.editor.toggle_editor&#039;)
+                    &#039;text&#039;: t(&#039;refinery.epiceditor.toggle_editor&#039;)
                 }).appendTo(holder);
 
                 that.init_editor();

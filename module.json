@@ -1,9 +1,9 @@
 {
-  "name": "refinery",
+  "name": "refinerycms-epiceditor",
   "description": "RefineryCMS EpicEditor module",
   "version": "0.0.1",
-  "homepage": "https://github.com/keram-refinery/refinery-clientside-refinery",
-  "bugs": "https://github.com/keram-refinery/refinery-clientside-refinery/issues",
+  "homepage": "https://github.com/keram-refinery/refinerycms-epiceditor",
+  "bugs": "https://github.com/keram-refinery/refinerycms-epiceditor/issues",
   "author": {
     "name": "Marek L.",
     "email": "nospam.keram@gmail.com",
@@ -11,7 +11,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/keram-refinery/refinery-clientside-refinery.git"
+    "url": "git://github.com/keram-refinery/refinerycms-epiceditor.git"
   },
   "licenses": [{
     "type": "MIT",
