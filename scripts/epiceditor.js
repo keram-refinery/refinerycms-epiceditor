@@ -248,7 +248,7 @@
                 tmp;
 
             if (this.is('initialised')) {
-                if (this.editor) {
+                if (this.editor && this.editor.is('loaded')) {
                     textarea = $(this.options.textarea);
                     tmp = /** @type {string} */(textarea.val());
 
