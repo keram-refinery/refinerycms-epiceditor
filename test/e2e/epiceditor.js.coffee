@@ -22,7 +22,7 @@ describe 'Refinery EpicEditor', ->
       @editor = new refinery.epiceditor.EpicEditor()
 
     after ->
-      @editor.destroy(true)
+      @editor.destroy()
 
     it 'is instance of refinery.Object', ->
       expect( @editor ).to.be.an.instanceof refinery.Object
@@ -34,7 +34,7 @@ describe 'Refinery EpicEditor', ->
       @editor.init($('#textarea').parent())
 
     after ->
-      @editor.destroy(true)
+      @editor.destroy()
 
     context '#container', ->
       it 'contains div.wysiwyg-editor-holder', ->
@@ -52,7 +52,7 @@ describe 'Refinery EpicEditor', ->
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
 
     after ->
-      @editor.destroy(true)
+      @editor.destroy()
 
     it 'has Resources (files) dialog', ->
       expect( @util_bar.html() ).to.have.string('Files Dialog')
@@ -77,7 +77,7 @@ describe 'Refinery EpicEditor', ->
       @util_bar.find('button.editor-images-dialog-btn').click()
 
     after ->
-      @editor.destroy(true)
+      @editor.destroy()
 
     context 'via Library', ->
       before (done) ->
@@ -135,7 +135,7 @@ describe 'Refinery EpicEditor', ->
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
 
     after ->
-      @editor.destroy(true)
+      @editor.destroy()
 
     context 'via Library', ->
       before (done) ->
@@ -176,7 +176,7 @@ describe 'Refinery EpicEditor', ->
       @util_bar.find('button.editor-pages-dialog-btn').click()
 
     after ->
-      @editor.destroy(true)
+      @editor.destroy()
 
     context 'via Library', ->
       before (done) ->
@@ -261,11 +261,11 @@ describe 'Refinery EpicEditor', ->
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
       @expectation = 'lorem ipsum'
       @editable_area.html(@expectation)
-      $('.epiceditor-toggle-button').click()
+      $('.wysiwyg-toggle-button').click()
       done()
 
     after ->
-      @editor.destroy(true)
+      @editor.destroy()
       @editable_area.empty()
       @textarea.val('')
 
@@ -275,7 +275,7 @@ describe 'Refinery EpicEditor', ->
 
     context 'second click', ->
       before ->
-        $('.epiceditor-toggle-button').click()
+        $('.wysiwyg-toggle-button').click()
 
       it 'shows again editor', ->
         expect( $('#textarea').parent().hasClass('wysiwyg-editor-on') ).to.be.true
