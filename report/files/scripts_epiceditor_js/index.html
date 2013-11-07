@@ -292,28 +292,28 @@
          * @param {!jQuery} util_bar
          * @return {undefined}
          */
-        init_pages_dialog: function (util_bar) {
+        init_links_dialog: function (util_bar) {
             var that = this,
-                pages_btn, pages_dialog;
+                pages_btn, links_dialog;
 
             pages_btn = $(&#039;&lt;button/&gt;&#039;, {
-                &#039;title&#039;: t(&#039;refinery.epiceditor.pages_dialog_button_title&#039;),
+                &#039;title&#039;: t(&#039;refinery.epiceditor.links_dialog_button_title&#039;),
                 &#039;class&#039;: &#039;editor-pages-dialog-btn refinery-btn&#039;
             }).prependTo(util_bar);
 
-            pages_dialog = refinery(&#039;admin.PagesDialog&#039;);
+            links_dialog = refinery(&#039;admin.LinksDialog&#039;);
 
             pages_btn.on(&#039;click&#039;, function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                pages_dialog.init().open();
+                links_dialog.init().open();
 
                 return false;
             });
 
-            pages_dialog.on(&#039;insert&#039;,
-                /** @param {pages_dialog_object} link */
+            links_dialog.on(&#039;insert&#039;,
+                /** @param {links_dialog_object} link */
                 function (link) {
                     var tpl = &#039;[%title](%url)&#039;;
 
@@ -324,14 +324,14 @@
                 }
             );
 
-            that.pages_dialog = pages_dialog;
+            that.links_dialog = links_dialog;
         },
 
         unload_editor: function () {
             this.holder.removeClass(&#039;wysiwyg-editor-on&#039;);
             this.images_dialog.destroy();
             this.resources_dialog.destroy();
-            this.pages_dialog.destroy();
+            this.links_dialog.destroy();
             this.editor.unload();
         },
 
@@ -388,7 +388,7 @@
                 util_bar = $(editor.getElement(&#039;wrapper&#039;)).find(&#039;#epiceditor-utilbar&#039;);
                 that.init_images_dialog(util_bar);
                 that.init_resources_dialog(util_bar);
-                that.init_pages_dialog(util_bar);
+                that.init_links_dialog(util_bar);
             }
 
             that.toggle_button.on(&#039;click&#039;, function (e) {

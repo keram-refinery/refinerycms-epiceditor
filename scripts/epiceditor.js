@@ -101,7 +101,7 @@
                     var tpl = '![%alt](%url)';
 
                     if (img.url) {
-                        tpl = tpl.replace('%alt', /** @type {string} */(img.alt));
+                        tpl = tpl.replace('%alt', refinery.htmlEncode(img.alt));
                         tpl = tpl.replace('%url', /** @type {string} */(img.url));
                         that.insert(tpl);
                     } else {
@@ -110,6 +110,10 @@
                 }
             );
 
+            /**
+             * @expose
+             * @type {Object}
+             */
             that.images_dialog = images_dialog;
         },
 
@@ -142,7 +146,7 @@
                 function (img) {
                     var tpl = '![%alt](%url)';
 
-                    tpl = tpl.replace('%alt', img.alt);
+                    tpl = tpl.replace('%alt', refinery.htmlEncode(img.alt));
                     tpl = tpl.replace('%url', img.sizes[img.size]);
 
                     that.insert(tpl);
@@ -193,6 +197,10 @@
                 }
             );
 
+            /**
+             * @expose
+             * @type {Object}
+             */
             that.resources_dialog = resources_dialog;
         },
 
@@ -201,46 +209,50 @@
          * @param {!jQuery} util_bar
          * @return {undefined}
          */
-        init_pages_dialog: function (util_bar) {
+        init_links_dialog: function (util_bar) {
             var that = this,
-                pages_btn, pages_dialog;
+                links_btn, links_dialog;
 
-            pages_btn = $('<button/>', {
-                'title': t('refinery.epiceditor.pages_dialog_button_title'),
-                'class': 'editor-pages-dialog-btn refinery-btn'
+            links_btn = $('<button/>', {
+                'title': t('refinery.epiceditor.links_dialog_button_title'),
+                'class': 'editor-links-dialog-btn refinery-btn'
             }).prependTo(util_bar);
 
-            pages_dialog = refinery('admin.PagesDialog');
+            links_dialog = refinery('admin.LinksDialog');
 
-            pages_btn.on('click', function (e) {
+            links_btn.on('click', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
-                pages_dialog.init().open();
+                links_dialog.init().open();
 
                 return false;
             });
 
-            pages_dialog.on('insert',
-                /** @param {pages_dialog_object} link */
+            links_dialog.on('insert',
+                /** @param {links_dialog_object} link */
                 function (link) {
                     var tpl = '[%title](%url)';
 
-                    tpl = tpl.replace('%title', link.title);
+                    tpl = tpl.replace('%title', refinery.htmlEncode(link.title));
                     tpl = tpl.replace('%url', link.url);
 
                     that.insert(tpl);
                 }
             );
 
-            that.pages_dialog = pages_dialog;
+            /**
+             * @expose
+             * @type {Object}
+             */
+            that.links_dialog = links_dialog;
         },
 
         unload_editor: function () {
             this.holder.removeClass('wysiwyg-editor-on');
             this.images_dialog.destroy();
             this.resources_dialog.destroy();
-            this.pages_dialog.destroy();
+            this.links_dialog.destroy();
             this.editor.unload();
         },
 
@@ -297,7 +309,7 @@
                 util_bar = $(editor.getElement('wrapper')).find('#epiceditor-utilbar');
                 that.init_images_dialog(util_bar);
                 that.init_resources_dialog(util_bar);
-                that.init_pages_dialog(util_bar);
+                that.init_links_dialog(util_bar);
             }
 
             that.toggle_button.on('click', function (e) {
@@ -329,7 +341,7 @@
 
             if (that.is('initialisable')) {
                 that.is('initialising', true);
-                that.attach_holder(holder);
+                that.holder = holder;
 
                 editor_holder = $('<div/>', {
                     'class': 'wysiwyg-editor-holder'
@@ -360,11 +372,15 @@
      * @param  {jQuery} holder
      * @return {undefined}
      */
-    refinery.admin.ui.editorEpicEditor = function (holder) {
-        var tabs = holder.find('.ui-tabs'), editors = [];
+    refinery.admin.ui.editorEpicEditor = function (holder, ui) {
+        var tabs = holder.find('.ui-tabs'),
+            editors = [],
+            editor;
 
         holder.find('.wysiwyg-editor-wrapper').each(function () {
-            editors[editors.length] = refinery('epiceditor.EpicEditor').init($(this));
+            editor = refinery('epiceditor.EpicEditor').init($(this));
+            editors[editors.length] = editor;
+            ui.addObject(editor);
         });
 
         tabs.on('tabsactivate', function () {

@@ -1,6 +1,6 @@
-refinery.admin.ImagesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/images_dialog.json'
-refinery.admin.ResourcesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/resources_dialog.json'
-refinery.admin.PagesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/pages_dialog.json'
+refinery.admin.ImagesDialog.prototype.options.url = '/components/refinerycms-clientside/test/fixtures/images_dialog.json'
+refinery.admin.ResourcesDialog.prototype.options.url = '/components/refinerycms-clientside/test/fixtures/resources_dialog.json'
+refinery.admin.LinksDialog.prototype.options.url = '/components/refinerycms-clientside/test/fixtures/links_dialog.json'
 
 refinery.epiceditor.EpicEditor.prototype.options.basePath = '../../'
 refinery.epiceditor.EpicEditor.prototype.options.theme.base = 'styles/themes/base/epiceditor.css'
@@ -60,8 +60,8 @@ describe 'Refinery EpicEditor', ->
     it 'has Images dialog', ->
       expect( @util_bar.html() ).to.have.string('Images Dialog')
 
-    it 'has Pages (links) dialog', ->
-      expect( @util_bar.html() ).to.have.string('Pages Dialog')
+    it 'has Links dialog', ->
+      expect( @util_bar.html() ).to.have.string('Links Dialog')
 
 
   describe 'Insert image', ->
@@ -85,7 +85,7 @@ describe 'Refinery EpicEditor', ->
         $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 0 })
         @expectation = '![Image alt](/refinerycms-clientside/test/fixtures/500x350.jpg)'
 
-        $.getJSON '/refinerycms-clientside/test/fixtures/image_dialog.json', (response) ->
+        $.getJSON '/components/refinerycms-clientside/test/fixtures/image_dialog.json', (response) ->
           ajaxStub = sinon.stub($, 'ajax')
           ajaxStub.returns(okResponse(response))
 
@@ -170,20 +170,20 @@ describe 'Refinery EpicEditor', ->
       @editor.init($('#textarea').parent())
       @editable_area = $(@editor.editor.getElement('editor').body)
       @util_bar = $(@editor.editor.getElement('wrapper')).find('#epiceditor-utilbar');
-      @editor.pages_dialog.on 'load', ->
+      @editor.links_dialog.on 'load', ->
         done()
 
-      @util_bar.find('button.editor-pages-dialog-btn').click()
+      @util_bar.find('button.editor-links-dialog-btn').click()
 
     after ->
       @editor.destroy()
 
     context 'via Library', ->
       before (done) ->
-        @util_bar.find('button.editor-pages-dialog-btn').click()
+        @util_bar.find('button.editor-links-dialog-btn').click()
         $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 0  })
         @expectation = '[Home](/)'
-        @editor.pages_dialog.on 'insert', ->
+        @editor.links_dialog.on 'insert', ->
           done()
         uiSelect($('.records li').first())
 
@@ -200,13 +200,13 @@ describe 'Refinery EpicEditor', ->
 
     context 'via Url', ->
       before (done) ->
-        @util_bar.find('button.editor-pages-dialog-btn').click()
+        @util_bar.find('button.editor-links-dialog-btn').click()
         $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 1 })
         url = 'http://localhost:9000/refinery-epiceditor/'
         @expectation = '[localhost:9000/refinery-epiceditor/](' + url + ')'
 
-        $('a[href="#pages-dialog-website"]').click()
-        tab = @editor.pages_dialog.holder.find('div[aria-expanded="true"]')
+        $('a[href="#links-dialog-website"]').click()
+        tab = @editor.links_dialog.holder.find('div[aria-expanded="true"]')
         tab.find('input[type="url"]').val(url)
         tab.find('input[type="submit"]').click()
         done()
@@ -224,7 +224,7 @@ describe 'Refinery EpicEditor', ->
 
     context 'as Email link', ->
       before (done) ->
-        @util_bar.find('button.editor-pages-dialog-btn').click()
+        @util_bar.find('button.editor-links-dialog-btn').click()
         $('.ui-dialog:visible').find('.ui-tabs').tabs({ active: 2 })
         email = 'lorem@ipsum.sk'
         subject = 'Hello Philip'
@@ -234,8 +234,8 @@ describe 'Refinery EpicEditor', ->
           '?subject=' + encodeURIComponent(subject) +
           '&amp;body=' + encodeURIComponent(body) + ')'
 
-        $('a[href="#pages-dialog-email"]').click()
-        tab = @editor.pages_dialog.holder.find('div[aria-expanded="true"]')
+        $('a[href="#links-dialog-email"]').click()
+        tab = @editor.links_dialog.holder.find('div[aria-expanded="true"]')
         tab.find('#email_address_text').val(email)
         tab.find('#email_default_subject_text').val(subject)
         tab.find('#email_default_body_text').val(body)

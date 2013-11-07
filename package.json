@@ -1,0 +1,62 @@
+{
+  "name": "refinerycms-clientside",
+  "description": "RefineryCMS clientside",
+  "version": "0.0.1",
+  "keywords": [
+    "gruntplugin",
+    "RefineryCMS",
+    "ruby on rails"
+  ],
+  "homepage": "https://github.com/keram-refinery/refinerycms-epiceditor",
+  "bugs": "https://github.com/keram-refinery/refinerycms-epiceditor/issues",
+  "author": {
+    "name": "Marek L.",
+    "email": "nospam.keram@gmail.com",
+    "url": "http://refinery.sk/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/keram-refinery/refinerycms-epiceditor.git"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/mit-license.php/"
+    }
+  ],
+  "readme": "",
+  "readmeFilename": "README.md",
+  "dependencies": {
+    "jquery": "~1.10.2",
+    "jquery.ui": "~1.10.3",
+    "modernizr": "~2.6.2"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-concat": "~0.3.0",
+    "grunt-contrib-coffee": "~0.6.5",
+    "grunt-contrib-uglify": "~0.2.0",
+    "grunt-contrib-compass": "~0.1.3",
+    "grunt-contrib-jshint": "~0.4.1",
+    "grunt-contrib-connect": "~0.2.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-livereload": "~0.1.2",
+    "grunt-rev": "~0.1.0",
+    "grunt-usemin": "~0.1.10",
+    "grunt-regarde": "~0.1.1",
+    "grunt-mocha": "~0.3.0",
+    "grunt-open": "~0.2.0",
+    "grunt-concurrent": "~0.1.0",
+    "grunt-closure-tools": "~0.8.3",
+    "grunt-consolidate": "~0.9.1",
+    "grunt-connect-proxy": "~0.1.2",
+    "matchdep": "~0.1.1",
+    "chai": "~1.6.0",
+    "sinon": "~1.7.3",
+    "grunt-contrib-sass": "~0.5.0"
+  },
+  "engines": {
+    "node": ">=0.10.1"
+  }
+}

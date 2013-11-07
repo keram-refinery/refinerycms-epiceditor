@@ -54,7 +54,7 @@ html, body, iframe, div {
   background-position: 50% 50%;
 }
 
-#epiceditor-utilbar .editor-pages-dialog-btn {
+#epiceditor-utilbar .editor-links-dialog-btn {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAVxJREFUeNq0lIFtwjAQRWOLATICGzSMkAFQ6ASUDWADNggbNGwQxADQDdwJyggZoWd0kU6/59hO25O+4sTJc+z7d6b441ivm5IuN1JFcvYf4T6qRebHG1JDKsWUI51JD4A/50wi3IPfAYzhF1jCwrVJgL8xPCee8Ov1MpgZ8Dvpg8cvfGy4k5WH+5tFJnxHH3aQUIwly++isL+EV4H/244DmwvnaNEtpF7cV+oCwi1TcDWhpE9t0oLP20T4gdSx6jGhWsgkb8DHh9CfM3AHjxsxHrQjki84gpwyqnwPObloOyjxBT62PT87aUfBpmihDnptgVjj8nFMdNwQtKmoUIQPifC76qKx8kTC0eddZq38WOAca1wiocm1YuDMv5SW3IsiapT2MFmIJrG3hCJW5YUNwB8RsJ9/jcFHm96UhNZc1VvFSb5G+qn2gAtUgYQ6cNassALiYo1rTnwLMAAQPqEBmoR38QAAAABJRU5ErkJggg==)
 }
 
@@ -66,7 +66,6 @@ html, body, iframe, div {
 #epiceditor-utilbar .editor-images-dialog-btn {
   background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAIZJREFUeNpiYIACX1//+Qw0AExIhifQxAJaGg7zAc0MhwfRqAWgeMSVCpmoYTg0HhOwWcJEJcNhAMMSJnK9jyd5o1jCRI73icg7cPUsJHofziYiBMHqWfApIFIMryWjGW0EWIAzFW3evJFxNIhAgBGY2/7T0PwFtPTBAmA8JjLR0nAQAyDAAFohL+aUo2nFAAAAAElFTkSuQmCC);
 }
-
 
 .epiceditor-preview-mode #epiceditor-utilbar .refinery-btn {
   display: none;

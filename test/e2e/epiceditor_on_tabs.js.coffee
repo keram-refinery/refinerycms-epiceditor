@@ -1,6 +1,6 @@
 refinery.admin.ImagesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/images_dialog.json'
 refinery.admin.ResourcesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/resources_dialog.json'
-refinery.admin.PagesDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/pages_dialog.json'
+refinery.admin.LinksDialog.prototype.options.url = '../../components/refinerycms-clientside/test/fixtures/links_dialog.json'
 refinery.epiceditor.EpicEditor.prototype.options.basePath = '../../'
 refinery.epiceditor.EpicEditor.prototype.options.theme.base = 'styles/themes/base/epiceditor.css'
 refinery.epiceditor.EpicEditor.prototype.options.theme.editor = 'styles/themes/preview/refinery.css'
@@ -27,7 +27,10 @@ describe 'Refinery EpicEditor on Tabs', ->
 
   # google chrome returns This&nbsp;is&nbsp;body&nbsp;text which is not our bug probably
   it 'have content of textarea', ->
-    editor = refinery.Object.instances.get( $('#page_part_body').find('.wysiwyg-editor-wrapper').data('refinery-instances')[0] ).editor
+    editor = refinery.PageUI.objects.filter( (o) ->
+      return o.name == 'EpicEditor'
+    )[0]
+
     expect( $(editor.getElement('editor').body).text().replace(/\s/g, '') ).to.be.equal(@body_text.replace(/\s/g, ''))
 
   describe 'ui destroy and reinitialize', ->
