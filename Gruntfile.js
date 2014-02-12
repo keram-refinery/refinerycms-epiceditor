@@ -9,8 +9,7 @@ var mountFolder = function (connect, dir) {
 
 // var fs = require('fs');
 var src_path = __dirname;
-var compiler_path = '/home/keram/tools/web/closure-compiler/compiler.jar';
-
+var compiler_path = process.env.CLOSURE_COMPILER_JAR || 'tools/closure-compiler/compiler.jar';
 var build_dir = __dirname + '/lib/assets';
 
 module.exports = function (grunt) {
@@ -75,6 +74,19 @@ module.exports = function (grunt) {
                     }
                 }
             },
+            test: {
+                options: {
+                    port: 9001,
+                    //keepalive: false,
+                    middleware: function (connect, options) {
+                        return [
+                            mountFolder(connect, '.'),
+                            mountFolder(connect, '.tmp'),
+                            connect.directory(options.base)
+                        ];
+                    }
+                }
+            },
             rails: {
                 options: {
                     keepalive: false,
@@ -101,14 +113,19 @@ module.exports = function (grunt) {
             },
             all: [
                 'Gruntfile.js',
-                'scripts/*/*.js'
+                'scripts/*.js'
             ]
         },
 
         mocha: {
-            options: {
-                run: true,
-                ignoreLeaks: false
+            all: {
+                options: {
+                    run: true,
+                    urls: [
+                        'http://localhost:9001/test/e2e/devel.html',
+                        'http://localhost:9001/test/e2e/minified.html'
+                    ]
+                }
             }
         },
 
@@ -124,7 +141,7 @@ module.exports = function (grunt) {
         },
 
         assetUrl: {
-            css: {
+            styles: {
                 files: [{
                     expand: true,
                     dot: true,
@@ -155,7 +172,7 @@ module.exports = function (grunt) {
 
             base_js: {
                 src: [
-                    'scripts/*.js'
+                    'scripts/epiceditor.js'
                 ],
                 dest: '.tmp/assets/javascripts/epiceditor.all.js'
             }
@@ -186,9 +203,9 @@ module.exports = function (grunt) {
 
             base_js: {
                 src: [
-                    'scripts/*.js'
+                    'scripts/epiceditor.js'
                 ],
-                'dest': '.tmp/assets/javascripts/epiceditor.min.js'
+                dest: '.tmp/assets/javascripts/epiceditor.min.js'
             }
         },
 
@@ -268,6 +285,8 @@ module.exports = function (grunt) {
 
     grunt.registerTask('test', [
         'jshint',
+        'concurrent:test',
+        'connect:test',
         'mocha'
     ]);
 
