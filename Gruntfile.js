@@ -216,7 +216,7 @@ module.exports = function (grunt) {
                     expand: true,
                     dot: true,
                     cwd: '.tmp/assets/javascripts/',
-                    dest: build_dir + '/javascripts/refinery/',
+                    dest: build_dir + '/javascripts/refinery/epiceditor',
                     src: [
                         '**'
                     ]
@@ -227,7 +227,7 @@ module.exports = function (grunt) {
                     expand: true,
                     dot: true,
                     cwd: '.tmp/assets/stylesheets/',
-                    dest: build_dir + '/stylesheets/refinery/',
+                    dest: build_dir + '/stylesheets/refinery/epiceditor',
                     src: [
                         '**'
                     ]
@@ -238,7 +238,7 @@ module.exports = function (grunt) {
                     expand: true,
                     dot: true,
                     cwd: 'i18n/',
-                    dest: build_dir + '/javascripts/refinery/i18n/',
+                    dest: build_dir + '/javascripts/refinery/i18n/epiceditor',
                     src: [
                         '**'
                     ]
