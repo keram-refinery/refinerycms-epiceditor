@@ -249,7 +249,7 @@
         },
 
         unload_editor: function () {
-            this.holder.removeClass('wysiwyg-editor-on');
+            this.holder.removeClass('visual-editor-on');
             this.images_dialog.destroy();
             this.resources_dialog.destroy();
             this.links_dialog.destroy();
@@ -279,7 +279,7 @@
                     textarea.val(tmp);
                 }
 
-                this.holder.find('.wysiwyg-editor-holder').remove();
+                this.holder.find('.visual-editor-holder').remove();
                 this.toggle_button.remove();
             }
 
@@ -301,7 +301,7 @@
             function load_editor () {
                 var util_bar;
 
-                holder.addClass('wysiwyg-editor-on');
+                holder.addClass('visual-editor-on');
 
                 editor.remove(options.file.name);
                 editor.load();
@@ -317,16 +317,28 @@
 
                 e.preventDefault();
 
-                if (holder.hasClass('wysiwyg-editor-on')) {
+                if (holder.hasClass('visual-editor-on')) {
                     that.unload_editor();
                     textarea.val(tmp);
                 } else {
                     load_editor();
                     editor.importFile(options.file.name, tmp);
+                    that.reflow();
                 }
             });
 
             load_editor();
+        },
+
+        /**
+         * fix height and reflow
+         * @return {Object} self
+         */
+        reflow: function () {
+            //this.holder.find('.visual-editor-holder').height(this.holder.height());
+            this.editor.reflow();
+
+            return this;
         },
 
         /**
@@ -344,14 +356,14 @@
                 that.holder = holder;
 
                 editor_holder = $('<div/>', {
-                    'class': 'wysiwyg-editor-holder'
+                    'class': 'visual-editor-holder'
                 }).appendTo(holder);
 
                 that.options.container = editor_holder.get(0);
                 that.options.file.name = 'refinery' + this.uid;
 
                 that.toggle_button = $('<button/>', {
-                    'class': 'wysiwyg-toggle-button',
+                    'class': 'visual-editor-toggle-button',
                     'text': t('refinery.epiceditor.toggle_editor')
                 }).appendTo(holder);
 
@@ -374,21 +386,16 @@
      */
     refinery.admin.ui.editorEpicEditor = function (holder, ui) {
         var tabs = holder.find('.ui-tabs'),
-            editors = [],
-            editor;
+            arr = [];
 
-        holder.find('.wysiwyg-editor-wrapper').each(function () {
-            editor = refinery('epiceditor.EpicEditor').init($(this));
-            editors[editors.length] = editor;
-            ui.addObject(editor);
+        holder.find('.visual-editor-wrapper').each(function () {
+            ui.addObject( arr[arr.length] = refinery('epiceditor.EpicEditor').init($(this)) );
         });
 
         tabs.on('tabsactivate', function () {
-            for (var i = editors.length - 1; i >= 0; i--) {
-                if (editors[i].editor) {
-                    editors[i].editor.reflow();
-                }
-            }
+            arr.map(function(e) {
+                e.reflow();
+            });
         });
     };
 

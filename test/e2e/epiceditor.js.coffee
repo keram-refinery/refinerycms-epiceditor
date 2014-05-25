@@ -37,11 +37,11 @@ describe 'Refinery EpicEditor', ->
       @editor.destroy()
 
     context '#container', ->
-      it 'contains div.wysiwyg-editor-holder', ->
-        expect( $('div.wysiwyg-editor-holder').length ).to.eq(1)
+      it 'contains div.visual-editor-holder', ->
+        expect( $('div.visual-editor-holder').length ).to.eq(1)
 
       it '#textarea is not visible', ->
-        expect( $('#textarea').parent().hasClass('wysiwyg-editor-on') ).to.be.true
+        expect( $('#textarea').parent().hasClass('visual-editor-on') ).to.be.true
 
 
   describe 'Dialogs', ->
@@ -77,7 +77,7 @@ describe 'Refinery EpicEditor', ->
       @util_bar.find('button.editor-images-dialog-btn').click()
 
     after ->
-      @editor.destroy()
+    #  @editor.destroy()
 
     context 'via Library', ->
       before (done) ->
@@ -108,13 +108,15 @@ describe 'Refinery EpicEditor', ->
       before (done) ->
         @util_bar.find('button.editor-images-dialog-btn').click()
         $('.ui-dialog:visible').find('.ui-tabs').tabs({ active:  1 })
-        url = 'http://localhost:9000/refinery-epiceditor/components/refinerycms-clientside/test/fixtures/sample.gif'
+        url = 'http://localhost:9000/components/refinerycms-clientside/test/fixtures/sample.gif'
         @expectation = '![](' + url + ')'
 
         tab = @editor.images_dialog.holder.find('div[aria-expanded="true"]')
         tab.find('input[type="url"]').val(url)
         tab.find('input[type="submit"]:visible').click()
-        done()
+        setTimeout(() ->
+          done()
+        , 100)
 
       after ->
         @editable_area.empty()

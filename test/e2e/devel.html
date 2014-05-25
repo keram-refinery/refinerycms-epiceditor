@@ -2,15 +2,29 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>EpicEditor specs</title>
+    <title>e2e devel specs</title>
     <link rel="stylesheet" href="/node_modules/grunt-mocha/node_modules/mocha/mocha.css">
-    <link rel="stylesheet" href="/components/refinerycms-clientside/components/jquery-ui/themes/base/minified/jquery-ui.min.css">
-    <link rel="stylesheet" href="../../styles/epiceditor.css">
+    <link rel="stylesheet" href="/components/refinerycms-clientside/components/jquery-ui/development-bundle/themes/base/minified/jquery-ui.min.css">
+   <style type="text/css">
+    .js-hide {
+        display: none !important;
+    }
+
+    .visual-editor-holder,
+    .visual-editor-on textarea {
+        display: none;
+    }
+
+    .visual-editor-on .visual-editor-holder {
+        display: block;
+        min-height: 400px;
+    }
+
+   </style>
 </head>
-<body>
+<body class="js">
     <div id="mocha"></div>
-    <div id="container">
-    </div>
+    <div id="container"></div>
 
     <script src="/node_modules/grunt-mocha/node_modules/mocha/mocha.js"></script>
     <script>mocha.setup('bdd')</script>
@@ -22,11 +36,13 @@
     <script src="/node_modules/sinon/pkg/sinon.js"></script>
 
     <!-- include components files here... -->
-    <script src="/components/refinerycms-clientside/components/jquery/jquery.js"></script>
-    <script src="/components/refinerycms-clientside/components/jquery_ujs.js"></script>
+    <script src="/components/refinerycms-clientside/components/jquery.min.js"></script>
+    <script src="/components/refinerycms-clientside/components/jquery-ui/development-bundle/ui/minified/jquery-ui.min.js"></script>
+    <script src="/components/refinerycms-clientside/components/jquery-ujs/src/rails.js"></script>
     <script src="/components/refinerycms-clientside/components/jquery.iframe-transport.js"></script>
     <script src="/components/refinerycms-clientside/components/jquery.cookie.js"></script>
-    <script src="/components/refinerycms-clientside/components/jquery-ui/ui/minified/jquery-ui.min.js"></script>
+    <script src="/components/refinerycms-clientside/components/jquery.simulate.js"></script>
+    <!-- <script src="/components/jquery.simulate.drag-sortable.js/jquery.simulate.drag-sortable.js"></script>-->
     <script src="/components/refinerycms-clientside/components/i18n.js"></script>
 
     <!-- include test helpers... -->
@@ -35,27 +51,25 @@
     <script src="/components/refinerycms-clientside/i18n/refinery-en.js"></script>
     <script src="/components/refinerycms-clientside/i18n/admin/admin-en.js"></script>
 
+    <!-- include application (builded) source files here... -->
+    <script src="/components/refinerycms-clientside/lib/assets/javascripts/refinery/refinery.min.js"></script>
+    <script src="/components/refinerycms-clientside/lib/assets/javascripts/refinery/admin.min.js"></script>
 
-    <script src="../../components/EpicEditor/epiceditor/js/epiceditor.js"></script>
+    <script src="/components/EpicEditor/epiceditor/js/epiceditor.js"></script>
 
-    <script src="../../i18n/epiceditor-en.js"></script>
+    <script src="/i18n/epiceditor-en.js"></script>
 
-    <script src="../../components/refinerycms-clientside/.tmp/assets/javascripts/refinery.all.js"></script>
-    <script src="../../components/refinerycms-clientside/.tmp/assets/javascripts/admin.all.js"></script>
-
-    <script src="../../scripts/epiceditor.js"></script>
+    <script src="/scripts/epiceditor.js"></script>
 
     <script src="./epiceditor.js"></script>
-    <!--
     <script src="./epiceditor_on_tabs.js"></script>
-    -->
+
 
     <script>
     if (navigator.userAgent.indexOf('PhantomJS') < 0) {
         mocha
-            .globals([ 'LiveReload', 'constructor', 'top', '0', '1', '2' ])
+            .globals([ 'LiveReload', 'constructor', '0', 'top', 'confirm', 'alert', 'applyDrag'])
             .run();
-
     }
     </script>
 </body>

@@ -10,42 +10,44 @@ describe 'Refinery EpicEditor on Tabs', ->
 
   before (done) ->
     @container = container = $('#container')
-    refinery.PageUI = new refinery.admin.UserInterface()
+    @ui = ui = new refinery.admin.UserInterface()
     @body_text = body_text = 'This is body text'
     @side_body_text = side_body_text = 'Some other text in Side body part'
+    that = @
     $.get('../../components/refinerycms-clientside/test/fixtures/page_new_parts_default.html', (response) ->
       container.html(response)
       $('#page_parts_attributes_2_body').val(body_text)
       $('#page_parts_attributes_3_body').val(side_body_text)
-      refinery.PageUI.init(container)
+      ui.init(container)
       done()
     )
 
   after ->
-    refinery.PageUI.destroy()
+    @ui.destroy()
     @container.empty()
 
   # google chrome returns This&nbsp;is&nbsp;body&nbsp;text which is not our bug probably
   it 'have content of textarea', ->
-    editor = refinery.PageUI.objects.filter( (o) ->
-      return o.name == 'EpicEditor'
-    )[0]
-
-    expect( $(editor.getElement('editor').body).text().replace(/\s/g, '') ).to.be.equal(@body_text.replace(/\s/g, ''))
+    body_epiceditor_editable_iframe = $('#page_part_body').find('iframe').contents().find('#epiceditor-editor-frame')
+    expect( normaliseText(body_epiceditor_editable_iframe.contents().find('body').text()) ).to.be.equal(normaliseText(@body_text))
 
   describe 'ui destroy and reinitialize', ->
     before ->
-      @text_before = $('#page_parts_attributes_1_body').val()
-      @keys_before = Object.keys(refinery.Object.instances.all())
-      refinery.PageUI.destroy()
-      refinery.PageUI = new refinery.admin.UserInterface().init(@container)
-      @keys_after = Object.keys(refinery.Object.instances.all())
-      @text_after = $('#page_parts_attributes_1_body').val()
-
-
-    it 'not change number of objects', ->
-      expect( @keys_after.length ).to.be.equal(@keys_before.length)
+      @text_before = 'Spy Who Loved Me, The'
+      $('#page_parts_attributes_2_body').val(@text_before)
+      @ui.destroy()
+      @ui = new refinery.admin.UserInterface().init(@container)
+      @text_after = $('#page_parts_attributes_2_body').val()
 
     it 'not change content of textareas', ->
       expect( @text_before ).to.be.equal(@text_after)
 
+  describe 'ui destroy and reinitialize', ->
+    before ->
+      @text_before = $('#page_parts_attributes_2_body').val()
+      @ui.destroy()
+      @ui = new refinery.admin.UserInterface().init(@container)
+      @text_after = $('#page_parts_attributes_2_body').val()
+
+    it 'not change content of textareas', ->
+      expect( @text_before ).to.be.equal(@text_after)

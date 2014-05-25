@@ -42,11 +42,11 @@
         return this.editor.destroy();
       });
       return context('#container', function() {
-        it('contains div.wysiwyg-editor-holder', function() {
-          return expect($('div.wysiwyg-editor-holder').length).to.eq(1);
+        it('contains div.visual-editor-holder', function() {
+          return expect($('div.visual-editor-holder').length).to.eq(1);
         });
         return it('#textarea is not visible', function() {
-          return expect($('#textarea').parent().hasClass('wysiwyg-editor-on')).to.be["true"];
+          return expect($('#textarea').parent().hasClass('visual-editor-on')).to.be["true"];
         });
       });
     });
@@ -82,9 +82,7 @@
         this.editor.images_dialog.on('insert', function(img) {});
         return this.util_bar.find('button.editor-images-dialog-btn').click();
       });
-      after(function() {
-        return this.editor.destroy();
-      });
+      after(function() {});
       context('via Library', function() {
         before(function(done) {
           this.util_bar.find('button.editor-images-dialog-btn').click();
@@ -120,12 +118,14 @@
           $('.ui-dialog:visible').find('.ui-tabs').tabs({
             active: 1
           });
-          url = 'http://localhost:9000/refinery-epiceditor/components/refinerycms-clientside/test/fixtures/sample.gif';
+          url = 'http://localhost:9000/components/refinerycms-clientside/test/fixtures/sample.gif';
           this.expectation = '![](' + url + ')';
           tab = this.editor.images_dialog.holder.find('div[aria-expanded="true"]');
           tab.find('input[type="url"]').val(url);
           tab.find('input[type="submit"]:visible').click();
-          return done();
+          return setTimeout(function() {
+            return done();
+          }, 100);
         });
         after(function() {
           this.editable_area.empty();
