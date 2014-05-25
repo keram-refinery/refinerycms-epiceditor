@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title></title>
+  <title>Plato - scripts/epiceditor.js</title>
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
@@ -13,7 +13,7 @@
   <![endif]-->
 
   <link href="../../assets/css/vendor/morris.css" rel="stylesheet">
-  <link href="../../assets/css/vendor/bootstrap-3.0.0-wip.css" rel="stylesheet">
+  <link href="../../assets/css/vendor/bootstrap.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome.css" rel="stylesheet">
   <link href="../../assets/css/vendor/font-awesome-ie7.css" rel="stylesheet">
   <link href="../../assets/css/vendor/codemirror.css" rel="stylesheet">
@@ -26,8 +26,8 @@
 
 <div class="navbar navbar-fixed-top">
   <div class="container">
-    <a class="brand" href="http://github.com/jsoverson/plato">Plato on Github</a>
-    <ul class="nav">
+    <a class="navbar-brand" href="http://github.com/es-analysis/plato">Plato on Github</a>
+    <ul class="nav navbar-nav">
       <li>
         <a href="../../index.html">Report Home</a>
       </li>
@@ -43,31 +43,31 @@
 
 <div class="container aggregate-stats">
   <div class="row">
-    <div class="span6">
-      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"></i></a></h2>
-      <p class="stat">66.16</p>
+    <div class="col-md-6">
+      <h2 class="header">Maintainability <a href="http://blogs.msdn.com/b/codeanalysis/archive/2007/11/20/maintainability-index-range-and-meaning.aspx"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="A value between 0 and 100 that represents the relative ease of maintaining the code. A high value means better maintainability." data-original-title="Maintainability Index"  data-container="body"></i></a></h2>
+      <p class="stat">66.91</p>
     </div>
-    <div class="span6">
-      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h2>
-      <p class="stat">375</p>
+    <div class="col-md-6">
+      <h2 class="header">Lines of code <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h2>
+      <p class="stat">399</p>
     </div>
   </div>
   <div class="row historical">
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_maint" class="chart"></p>
     </div>
-    <div class="span6">
+    <div class="col-md-6">
       <p id="chart_historical_sloc" class="chart"></p>
     </div>
   </div>
   <div class="row">
-    <div class="span6">
-      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty"></i></a></h2>
-      <p class="stat">28.99</p>
+    <div class="col-md-6">
+      <h2 class="header">Difficulty  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="The difficulty measure is related to the difficulty of the program to write or understand." data-original-title="Difficulty" data-container="body"></i></a></h2>
+      <p class="stat">24.51</p>
     </div>
-    <div class="span6">
-      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs"></i></a></h2>
-      <p class="stat">2.64</p>
+    <div class="col-md-6">
+      <h2 class="header">Estimated Errors  <a href="http://en.wikipedia.org/wiki/Halstead_complexity_measures"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Halstead's delivered bugs is an estimate for the number of errors in the implementation." data-original-title="Delivered Bugs" data-container="body"></i></a></h2>
+      <p class="stat">2.71</p>
     </div>
   </div>
 </div>
@@ -77,12 +77,12 @@
     <h2 class="header">Function weight</h2>
   </div>
   <div class="row">
-    <div class="span6">
-      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity"></i></a></h3>
+    <div class="col-md-6">
+      <h3 class="chart-header">By Complexity <a href="http://en.wikipedia.org/wiki/Cyclomatic_complexity"><i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="This metric counts the number of distinct paths through a block of code. Lower values are better." data-original-title="Cyclomatic Complexity" data-container="body"></i></a></h3>
       <div id="fn-by-complexity" class="stat"></div>
     </div>
-    <div class="span6">
-      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC"></i></h3>
+    <div class="col-md-6">
+      <h3 class="chart-header">By SLOC  <i class="icon icon-info-sign" rel="popover" data-placement="top" data-trigger="hover" data-content="Source Lines of Code / Logical Lines of Code" data-original-title="SLOC/LSLOC" data-container="body"></i></h3>
       <div id="fn-by-sloc" class="stat"></div>
     </div>
   </div>
@@ -90,7 +90,7 @@
 
 <div class="container">
   <div class="row">
-    <textarea id="file-source" class="span12">/*global EpicEditor, marked */
+    <textarea id="file-source" class="col-md-12">/*global EpicEditor, marked */
 /*jslint sub: true */
 
 (function () {
@@ -107,7 +107,7 @@
 
         name: &#039;EpicEditor&#039;,
 
-        module: &#039;editor&#039;,
+        module: &#039;epiceditor&#039;,
 
         /** @typedef {epiceditor_config} */
         options: {
@@ -193,7 +193,7 @@
                     var tpl = &#039;![%alt](%url)&#039;;
 
                     if (img.url) {
-                        tpl = tpl.replace(&#039;%alt&#039;, /** @type {string} */(img.alt));
+                        tpl = tpl.replace(&#039;%alt&#039;, refinery.htmlEncode(img.alt));
                         tpl = tpl.replace(&#039;%url&#039;, /** @type {string} */(img.url));
                         that.insert(tpl);
                     } else {
@@ -202,6 +202,10 @@
                 }
             );
 
+            /**
+             * @expose
+             * @type {Object}
+             */
             that.images_dialog = images_dialog;
         },
 
@@ -211,6 +215,7 @@
 
             buttons = [ {
                 &#039;text&#039;: &#039;Insert&#039;,
+                &#039;class&#039;: &#039;submit-button&#039;,
                 &#039;click&#039;: function () {
                     dialog.insert(dialog.holder);
                 }
@@ -233,7 +238,7 @@
                 function (img) {
                     var tpl = &#039;![%alt](%url)&#039;;
 
-                    tpl = tpl.replace(&#039;%alt&#039;, img.alt);
+                    tpl = tpl.replace(&#039;%alt&#039;, refinery.htmlEncode(img.alt));
                     tpl = tpl.replace(&#039;%url&#039;, img.sizes[img.size]);
 
                     that.insert(tpl);
@@ -284,6 +289,10 @@
                 }
             );
 
+            /**
+             * @expose
+             * @type {Object}
+             */
             that.resources_dialog = resources_dialog;
         },
 
@@ -294,16 +303,16 @@
          */
         init_links_dialog: function (util_bar) {
             var that = this,
-                pages_btn, links_dialog;
+                links_btn, links_dialog;
 
-            pages_btn = $(&#039;&lt;button/&gt;&#039;, {
+            links_btn = $(&#039;&lt;button/&gt;&#039;, {
                 &#039;title&#039;: t(&#039;refinery.epiceditor.links_dialog_button_title&#039;),
-                &#039;class&#039;: &#039;editor-pages-dialog-btn refinery-btn&#039;
+                &#039;class&#039;: &#039;editor-links-dialog-btn refinery-btn&#039;
             }).prependTo(util_bar);
 
             links_dialog = refinery(&#039;admin.LinksDialog&#039;);
 
-            pages_btn.on(&#039;click&#039;, function (e) {
+            links_btn.on(&#039;click&#039;, function (e) {
                 e.preventDefault();
                 e.stopPropagation();
 
@@ -317,18 +326,22 @@
                 function (link) {
                     var tpl = &#039;[%title](%url)&#039;;
 
-                    tpl = tpl.replace(&#039;%title&#039;, link.title);
+                    tpl = tpl.replace(&#039;%title&#039;, refinery.htmlEncode(link.title));
                     tpl = tpl.replace(&#039;%url&#039;, link.url);
 
                     that.insert(tpl);
                 }
             );
 
+            /**
+             * @expose
+             * @type {Object}
+             */
             that.links_dialog = links_dialog;
         },
 
         unload_editor: function () {
-            this.holder.removeClass(&#039;wysiwyg-editor-on&#039;);
+            this.holder.removeClass(&#039;visual-editor-on&#039;);
             this.images_dialog.destroy();
             this.resources_dialog.destroy();
             this.links_dialog.destroy();
@@ -340,7 +353,7 @@
                 tmp;
 
             if (this.is(&#039;initialised&#039;)) {
-                if (this.editor) {
+                if (this.editor &amp;&amp; this.editor.is(&#039;loaded&#039;)) {
                     textarea = $(this.options.textarea);
                     tmp = /** @type {string} */(textarea.val());
 
@@ -358,7 +371,7 @@
                     textarea.val(tmp);
                 }
 
-                this.holder.find(&#039;.wysiwyg-editor-holder&#039;).remove();
+                this.holder.find(&#039;.visual-editor-holder&#039;).remove();
                 this.toggle_button.remove();
             }
 
@@ -380,7 +393,7 @@
             function load_editor () {
                 var util_bar;
 
-                holder.addClass(&#039;wysiwyg-editor-on&#039;);
+                holder.addClass(&#039;visual-editor-on&#039;);
 
                 editor.remove(options.file.name);
                 editor.load();
@@ -396,16 +409,28 @@
 
                 e.preventDefault();
 
-                if (holder.hasClass(&#039;wysiwyg-editor-on&#039;)) {
+                if (holder.hasClass(&#039;visual-editor-on&#039;)) {
                     that.unload_editor();
                     textarea.val(tmp);
                 } else {
                     load_editor();
                     editor.importFile(options.file.name, tmp);
+                    that.reflow();
                 }
             });
 
             load_editor();
+        },
+
+        /**
+         * fix height and reflow
+         * @return {Object} self
+         */
+        reflow: function () {
+            //this.holder.find(&#039;.visual-editor-holder&#039;).height(this.holder.height());
+            this.editor.reflow();
+
+            return this;
         },
 
         /**
@@ -420,17 +445,17 @@
 
             if (that.is(&#039;initialisable&#039;)) {
                 that.is(&#039;initialising&#039;, true);
-                that.attach_holder(holder);
+                that.holder = holder;
 
                 editor_holder = $(&#039;&lt;div/&gt;&#039;, {
-                    &#039;class&#039;: &#039;wysiwyg-editor-holder&#039;
+                    &#039;class&#039;: &#039;visual-editor-holder&#039;
                 }).appendTo(holder);
 
                 that.options.container = editor_holder.get(0);
                 that.options.file.name = &#039;refinery&#039; + this.uid;
 
                 that.toggle_button = $(&#039;&lt;button/&gt;&#039;, {
-                    &#039;class&#039;: &#039;epiceditor-toggle-button&#039;,
+                    &#039;class&#039;: &#039;visual-editor-toggle-button&#039;,
                     &#039;text&#039;: t(&#039;refinery.epiceditor.toggle_editor&#039;)
                 }).appendTo(holder);
 
@@ -451,19 +476,18 @@
      * @param  {jQuery} holder
      * @return {undefined}
      */
-    refinery.admin.ui.editorEpicEditor = function (holder) {
-        var tabs = holder.find(&#039;.ui-tabs&#039;), editors = [];
+    refinery.admin.ui.editorEpicEditor = function (holder, ui) {
+        var tabs = holder.find(&#039;.ui-tabs&#039;),
+            arr = [];
 
-        holder.find(&#039;.wysiwyg-editor-wrapper&#039;).each(function () {
-            editors[editors.length] = refinery(&#039;editor.EpicEditor&#039;).init($(this));
+        holder.find(&#039;.visual-editor-wrapper&#039;).each(function () {
+            ui.addObject( arr[arr.length] = refinery(&#039;epiceditor.EpicEditor&#039;).init($(this)) );
         });
 
         tabs.on(&#039;tabsactivate&#039;, function () {
-            for (var i = editors.length - 1; i &gt;= 0; i--) {
-                if (editors[i].editor) {
-                    editors[i].editor.reflow();
-                }
-            }
+            arr.map(function(e) {
+                e.reflow();
+            });
         });
     };
 
